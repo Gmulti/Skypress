@@ -2,8 +2,8 @@
 
 namespace Skypress\Component\Factory;
 
-use Skypress\Kernel;
-use Skypress\Component\Models\iHooks;
+use Skypress\KernelSkypress;
+use Skypress\Component\Models\HooksInterface;
 
 use Skypress\Component\Service\MenuService;
 use Skypress\Component\Service\CustomPostTypeService;
@@ -15,8 +15,8 @@ use Skypress\Component\Factory\CustomPostTypeFactory;
 use Skypress\Component\Factory\TaxonomyFactory;
 use Skypress\Component\Factory\TermFactory;
 
-use Skypress\Component\Models\iStaticFactory;
-use Skypress\Component\Models\iCollegue;
+use Skypress\Component\Models\Factory\StaticFactoryInterface;
+use Skypress\Component\Models\ColleagueInterface;
 
 use Skypress\Component\Mediator\ServicesMediator;
 
@@ -33,7 +33,7 @@ if(!class_exists('ServiceFactory')){
 	 * @author Thomas DENEULIN <contact@skypress.fr>
 	 *
 	 */
-	class ServiceFactory implements iStaticFactory {
+	class ServiceFactory implements StaticFactoryInterface {
 
 		/**
 		 * @since 0.5
@@ -56,21 +56,7 @@ if(!class_exists('ServiceFactory')){
 		 */
 		private static $mediator = null;
 
-		/**
-		 * Remove a service
-		 *
-		 * @since 0.5
-		 * @version 0.5
-		 * @access public
-		 * @static
-		 *
-		 * @param  String $key
-		 * @return array
-		 */
-		public static function removeService($key){
-			unset(self::$services[$key]);
-			return self::$services;
-		}
+		
 
 		/**
 		 * Add a service
@@ -83,9 +69,9 @@ if(!class_exists('ServiceFactory')){
 		 * @param String $key
 		 * @param array $service
 		 */
-		public static function addService($key, $service){
-			self::$services[$key] = $service;
-			return self::$services;
+		public static function addService($service){
+			$sc = MediatorService::getMediator('ServiceContainerMediator');
+			$sc->setService($service);
 		}
 
 		/**
@@ -100,8 +86,9 @@ if(!class_exists('ServiceFactory')){
 		 * @return array
 		 */
 		public static function getServices(){
+			$sc = MediatorService::getMediator('ServiceContainerMediator');
 
-			return self::$services;
+			return $sc->getServices();
 		}
 
 		/**
@@ -115,9 +102,10 @@ if(!class_exists('ServiceFactory')){
 		 * @param  String $key
 		 * @return array      a service
 		 */
-		public static function getService( $key){
-
-			return self::$services[$key];
+		public static function getService($key){
+			$sc = MediatorService::getMediator('ServiceContainerMediator');
+			
+			return $sc->getService($key);
 		}
 
 		/**
@@ -125,98 +113,126 @@ if(!class_exists('ServiceFactory')){
          *
          * @since 0.5
 		 * @version 0.5
-		 * @access private
+		 * @access public
 		 * @static
          *
-         * @param  array $config
+         * @param  (array|string) $config
          * @return void
          */
         public static function create($configServices = array()){
 
-        	if(!empty($configServices) && is_array($configServices)):
 
-	        	foreach ($configServices as $key => $value):
+        	if(!empty($configServices)):
 
-	        		$value = apply_filters('service_factory_construct_' . $key . '_' . Kernel::getTypeFilter(), $value);
-
-	        		if($value['active']):
-
-	        			$valueConstructeur = '';
-	        			$factory = null;
-
-	        			if(isset($value['construct'])):
-
-	        				$valueConstructeur = $value['construct'];
-
-	        			endif;
-
-	        			switch ($key) :
-
-	        				case 'menu':
-
-	        					$service = new MenuService($valueConstructeur);
-
-	        					break;
-
-	                        case 'custom-post-type':
-
-	                        	// Choose custom post type factory
-								$factory = new CustomPostTypeFactory();
-								$factory = apply_filters( 'factory_' . $key . '_' . Kernel::getTypeFilter(), $factory );
-
-								// Choose custom post type service with set up factory
-	                        	$service = new CustomPostTypeService($valueConstructeur,$factory);
-
-	                            break;
-
-	        				case 'taxonomy':
-
-        						// Choose taxonomy factory
-								$factory = new TaxonomyFactory();
-								$factory = apply_filters( 'factory_' . $key . '_' . Kernel::getTypeFilter(), $factory );
-
-								// Choose taxonomy service with set up factory
-	                        	$service = new TaxonomyService($valueConstructeur,$factory);
-
-	                            break;
-
-	                        case 'term':
-
-        						// Choose taxonomy factory
-								$factory = new TermFactory();
-								$factory = apply_filters( 'factory_' . $key . '_' . Kernel::getTypeFilter(), $factory );
-
-								// Choose taxonomy service with set up factory
-	                        	$service = new TermService($factory, $valueConstructeur);
-
-	                            break;
-
-	                        default:
-
-	                        	do_action('execute_service_' . $key, self);
-	                        	break;
-
-	        			endswitch;
-
+        		if(is_array($configServices)):
 	        		
-						$service = apply_filters( 'service_' . $key . '_' . Kernel::getTypeFilter(),  $service);
-					 	self::addService($key, $service);
+	        		foreach ($configServices as $key => $value):
 
-	        			if($service instanceOf iCollegue):
-	        				$mediator = MediatorService::getMediator('ServiceMediator');
-	        				$mediator->setCollegue($service);
-	        				$service->setMediator($mediator);
-	        			endif;
+	        			if(self::getService($key) == null):
+			        		$value = apply_filters('service_factory_construct_' . $key . '_' . KernelSkypress::getTypeFilter(), $value);
 
-	        		endif;
+			        		
+			        		if($value['active']):
 
-	        	endforeach;
+			        			$valueConstructeur = '';
+			        			$factory = null;
+
+			        			if(isset($value['construct'])):
+
+			        				$valueConstructeur = $value['construct'];
+
+			        			endif;
+
+			        			self::createService($key,$valueConstructeur);
+
+			        		endif;
+			        	endif;
+
+		        	endforeach;
+	        	elseif(is_string($configServices) && self::getService($configServices) == null):
+
+	        		self::createService($configServices);
+
+	        	endif;
 
 	        else:
-	        	throw new \Exception("Votre configuration n'est pas correct");
+	        	throw new \Exception("Your configuration is not correct");
 
 	        endif;
 
+        }
+
+
+        /**
+         * @since 0.5
+		 * @version 0.5
+		 * @access private
+		 * @static
+         *
+         * @param  string $key
+         * @param  array $valueConstruct
+         * @return void
+         */
+        private static function createService($key, $valueConstructeur = ''){
+
+        	switch ($key) :
+
+				case 'menu':
+
+					$service = new MenuService($valueConstructeur);
+
+					break;
+
+	            case 'custom-post-type':
+	            case 'CustomPostTypeService':
+	  
+	            	// Choose custom post type factory
+					$factory = new CustomPostTypeFactory();
+					$factory = apply_filters( 'factory_' . $key . '_' . KernelSkypress::getTypeFilter(), $factory );
+
+					// Choose custom post type service with set up factory
+	            	$service = new CustomPostTypeService($factory, $valueConstructeur);
+
+	                break;
+
+				case 'taxonomy':
+				case 'TaxonomyService':
+
+					// Choose taxonomy factory
+					$factory = new TaxonomyFactory();
+					$factory = apply_filters( 'factory_' . $key . '_' . KernelSkypress::getTypeFilter(), $factory );
+
+					// Choose taxonomy service with set up factory
+	            	$service = new TaxonomyService($factory,$valueConstructeur);
+
+	                break;
+
+	            case 'term':
+	            case 'TermService':
+
+					// Choose taxonomy factory
+					$factory = new TermFactory();
+					$factory = apply_filters( 'factory_' . $key . '_' . KernelSkypress::getTypeFilter(), $factory );
+
+					// Choose taxonomy service with set up factory
+	            	$service = new TermService($factory, $valueConstructeur);
+
+	                break;
+
+	            default:
+
+	                $service = apply_filters( 'service_' . $key . '_' . KernelSkypress::getTypeFilter(),  '');
+	            	break;
+
+			endswitch;
+
+			$service = apply_filters( 'service_' . $key . '_' . KernelSkypress::getTypeFilter(),  $service);
+
+		 	self::addService($service);
+
+			if($service instanceOf ColleagueInterface):				
+				$service->setMediator($sc);
+			endif;
         }
 	}
 

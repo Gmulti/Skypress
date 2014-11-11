@@ -2,8 +2,8 @@
 
 namespace Skypress\Component\Service;
 
-use Skypress\Component\Models\iHooks;
-use Skypress\Component\Models\iConfig;
+use Skypress\Component\Models\HooksInterface;
+use Skypress\Component\Models\ConfigInterface;
 
 
 if(!class_exists('MenuService')){
@@ -16,7 +16,7 @@ if(!class_exists('MenuService')){
 	 * @author Thomas DENEULIN <contact@skypress.fr> 
 	 * 
 	 */
-	class MenuService implements iHooks, iConfig {
+	class MenuService implements HooksInterface, ConfigInterface {
 
 		/**
 		 * Liste menus
@@ -43,7 +43,7 @@ if(!class_exists('MenuService')){
 		}
 
 		/**
-		 * Implements iHooks
+		 * Implements HooksInterface
 		 *
 		 * @version 0.5
 		 * @since 0.5
@@ -58,7 +58,7 @@ if(!class_exists('MenuService')){
 		}
 
 		/**
-		 * Implements iConfig
+		 * Implements ConfigInterface
 		 * 
 		 * @param array $config
 		 *
@@ -72,7 +72,7 @@ if(!class_exists('MenuService')){
 			if(is_array($config)):
 				$this->menus = $config;
 			else:
-				throw new Exception("Le paramètre doit être un tableau");
+				throw new Exception("The parameter must be an array");
 			endif;
 
 			return $this;

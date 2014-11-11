@@ -222,15 +222,14 @@ if ( ! class_exists( 'Taxonomy' ) ){
 		 */
 		public function setLabels($labels){
 
-	    	 $singular   = ucwords( str_replace( '_', ' ', $this->getSlug() ) );  
-	    	 $plural     = $singular . 's';
-			  
+	    	 $name   = ucwords( str_replace( '_', ' ', $this->getSlug() ) );  
+
 			 // Default
 		     $labels = array_merge(
 			      array(  
-			           'name'                  => $plural,  
-			           'singular_name'         => $singular,  
-			           'menu_name'             => $plural  
+			           'name'                  => $name,  
+			           'singular_name'         => $name,  
+			           'menu_name'             => $name  
 			       )
 			       ,
 			       $labels

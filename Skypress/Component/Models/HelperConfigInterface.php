@@ -1,6 +1,5 @@
 <?php 
 
-
 namespace Skypress\Component\Models;
 
 /**
@@ -11,15 +10,13 @@ namespace Skypress\Component\Models;
  * @author Thomas DENEULIN <contact@skypress.fr> 
  * 
  */
-interface iHooks{
+interface HelperConfigInterface{
 	/**
-	 * Execute les différents hooks
-	 *
-	 * @since 0.5
 	 * @version 0.5
-	 * @access public
-	 * 
-	 * @return void
+ 	 * @since 0.5
+ 	 * @access public
+ 	 * 
+	 * @return boolean
 	 */
-	public function hooks();	
+	public function isEmptyConfig();
 }

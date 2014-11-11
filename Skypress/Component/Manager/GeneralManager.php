@@ -5,8 +5,8 @@ namespace Skypress\Component\Manager;
 
 
 
-use Skypress\Component\Models\iHooks;
-use Skypress\Component\Models\iConfig;
+use Skypress\Component\Models\HooksInterface;
+use Skypress\Component\Models\ConfigInterface;
 
 
 if(!class_exists('GeneralManager')){
@@ -19,7 +19,7 @@ if(!class_exists('GeneralManager')){
 	 * @author Thomas DENEULIN <contact@skypress.fr> 
 	 * 
 	 */
-	class GeneralManager implements iHooks, iConfig{
+	class GeneralManager implements HooksInterface, ConfigInterface{
 
 		/**
 		 * @since 0.5
@@ -47,7 +47,7 @@ if(!class_exists('GeneralManager')){
 		}
 
 		/**
-		 * Implements iHooks
+		 * Implements HooksInterface
 		 *
 		 * @since 0.5
 		 * @version 0.5

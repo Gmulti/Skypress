@@ -5,7 +5,7 @@ namespace Skypress\Component\Manager;
 
 
 
-use Skypress\Component\Models\iHooks;
+use Skypress\Component\Models\HooksInterface;
 
 if(!class_exists('FrontManager'))
 {
@@ -18,7 +18,7 @@ if(!class_exists('FrontManager'))
 	 * @author Thomas DENEULIN <contact@skypress.fr> 
 	 * 
 	 */
-	class FrontManager extends GeneralManager implements iHooks{
+	class FrontManager extends GeneralManager implements HooksInterface{
 
 		/**
 		 * Construct
@@ -34,7 +34,7 @@ if(!class_exists('FrontManager'))
 		}
 
 		/**
-		 * Implements iHooks
+		 * Implements HooksInterface
 		 * 
 		 * @since 0.5
 		 * @version 0.5

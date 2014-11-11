@@ -2,13 +2,13 @@
 
 namespace Skypress\Component\Service;
 
-use Skypress\Component\Models\iHooks;
-use Skypress\Component\Models\iTaxonomyFactory;
-use Skypress\Component\Models\iHelperConfig;
-use Skypress\Component\Models\iConfig;
-use Skypress\Component\Models\iOrder;
+use Skypress\Component\Models\HooksInterface;
+use Skypress\Component\Models\Factory\TaxonomyFactoryInterface;
+use Skypress\Component\Models\HelperConfigInterface;
+use Skypress\Component\Models\ConfigInterface;
+use Skypress\Component\Models\OrderInterface;
 
-use Skypress\Component\Service\CollegueService;
+use Skypress\Component\Service\ColleagueService;
 
 
 
@@ -23,7 +23,7 @@ if(!class_exists('TaxonomyService')){
 	 * @author Thomas DENEULIN <contact@skypress.fr>
 	 *
 	 */
-	class TaxonomyService extends CollegueService implements iOrder, iHooks, iConfig, iHelperConfig {
+	class TaxonomyService extends ColleagueService implements OrderInterface, HooksInterface, ConfigInterface, HelperConfigInterface {
 
 		/**
 		 * Liste des taxos
@@ -50,7 +50,7 @@ if(!class_exists('TaxonomyService')){
 
 		/**
 		 * Factory de Taxo
-		 * @var iTaxonomyFactory
+		 * @var TaxonomyFactoryInterface
 		 * @version 0.5
 		 * @since 0.5
 		 * @access protected
@@ -77,18 +77,21 @@ if(!class_exists('TaxonomyService')){
 		 * @access public
 		 *
 		 * @param array           $configService
-		 * @param iTaxonomyFactory $factory
+		 * @param TaxonomyFactoryInterface $factory
 		 */
-		public function __construct($configService, $factory) {
+		public function __construct(TaxonomyFactoryInterface $factory, $configService = array()) {
 
-			$this->setConfig($configService);
+			if(!empty($configService)):
+				$this->setConfigs($configService);
+			endif;
+
 			$this->factory = $factory;
 
 		}
 
 
 		/**
-		 * Implements iHooks
+		 * Implements HooksInterface
 		 * 
 		 * @access public
 		 * @version 0.5
@@ -191,34 +194,71 @@ if(!class_exists('TaxonomyService')){
 		 *
 		 * @param array $config
 		 */
-		public function setConfig($config){
+		public function setConfigs($config){
 
 			if(!empty($config) && is_array($config)):
 
-				foreach ($config as $key => $cpt):
+				foreach ($config as $key => $taxo):
 
-					if (!array_key_exists('slug', $cpt) || empty($cpt['slug'])):
-						throw new \Exception("Votre taxonomy doit avoir un slug");
+					if (!array_key_exists('slug', $taxo) || empty($taxo['slug'])):
+						throw new \Exception("Your taxonomy should have a slug");
 					endif;
 
-					if (!array_key_exists('post_type', $cpt) || empty($cpt['post_type'])):
-						throw new \Exception("Votre taxonomy doit avoir un tableau de post type.");
+					if (!array_key_exists('post_type', $taxo) || empty($taxo['post_type'])):
+						throw new \Exception("Your taxonomy should have an array of post types.");
 					endif;
 
-					if (!array_key_exists('args', $cpt)):
-						$cpt['args'] = array();
+					if (!array_key_exists('args', $taxo)):
+						$taxo['args'] = array();
 					endif;
 
-					if (!array_key_exists('labels', $cpt)):
-						$cpt['labels'] = array();
+					if (!array_key_exists('labels', $taxo)):
+						$taxo['labels'] = array();
 					endif;
+
+					array_push($this->taxonomies, $taxo);
 
 				endforeach;
 
 			endif;
 
-			$this->taxonomies = $config;
 			return $this;
+		}
+
+		/**
+		 * Set one config taxo
+		 *
+		 * @version 0.5
+		 * @since 0.5
+		 * @access public
+		 *
+		 * @param array $config
+		 */
+		public function setConfig($config){
+
+			if (!array_key_exists('slug', $config) || empty($config['slug'])):
+				throw new \Exception("Your custom post type must have a slug");
+			endif;
+
+			if (!array_key_exists('post_type', $config) || empty($config['post_type'])):
+				throw new \Exception("Your taxonomy should have an array of post types.");
+			endif;
+
+			if (!array_key_exists('args', $config)):
+				$config['args'] = array();
+			endif;
+
+			if (!array_key_exists('labels', $config)):
+				$config['labels'] = array();
+			endif;
+
+			array_push($this->taxonomies, $config);
+
+			return $this;
+		}
+
+		public function addTaxonomy($config){
+			$this->setConfig($config);
 		}
 
 		/**
@@ -236,7 +276,7 @@ if(!class_exists('TaxonomyService')){
 		}
 
 		/**
-		 * Implements iOrder
+		 * Implements OrderInterface
 		 *
 		 * @version 0.5
 		 * @since 0.5
@@ -249,7 +289,7 @@ if(!class_exists('TaxonomyService')){
 		}
 
 		/**
-		 * Implements iOrder
+		 * Implements OrderInterface
 		 * 
 		 * @version 0.5
 		 * @since 0.5
@@ -261,7 +301,7 @@ if(!class_exists('TaxonomyService')){
 			if(is_int($order)):
 				$this->order = $order;
 			else:
-				throw new Exception("Le paramètre order doit être un integer");
+				throw new Exception("The parameter must be an integer");
 			endif;
 
 			

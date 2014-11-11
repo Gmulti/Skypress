@@ -97,14 +97,13 @@ if ( ! class_exists( 'CustomPostType' ) ){
 		public function setLabels( $slug, $labels = array() ) 
 		{
 			  
-	    	$singular   = ucwords( preg_replace( '#([_-])#', ' ', $slug ) );  
-	    	$plural     = $singular . 's';
+	    	$name   = ucwords( preg_replace( '#([_-])#', ' ', $slug ) );  
 			  
 		    $this->labels = array_merge(
 			    array(  
-			       'name'                  => $plural,  
-		           'singular_name'         => $singular,  
-		           'menu_name'             => $plural  
+			       'name'                  => $name,  
+		           'singular_name'         => $name,  
+		           'menu_name'             => $name  
 		        )
 			    ,
 			    $labels

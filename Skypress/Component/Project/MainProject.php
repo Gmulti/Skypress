@@ -6,10 +6,8 @@ use Skypress\Component\Manager\BackManager;
 use Skypress\Component\Manager\FrontManager;
 use Skypress\Component\Manager\GeneralManager;
 
-use Skypress\Component\Models\iSingletonMain;
-use Skypress\Component\Models\iServiceManager;
-use Skypress\Component\Models\iHooks;
-use Skypress\Component\Models\iOrder;
+use Skypress\Component\Models\HooksInterface;
+use Skypress\Component\Models\OrderInterface;
 
 use Skypress\Component\Factory\ServiceFactory;
 use Skypress\Component\Factory\ManagerFactory;
@@ -17,7 +15,7 @@ use Skypress\Component\Factory\ManagerFactory;
 use Skypress\Component\Strategy\MenuStrategy;
 use Skypress\Component\Strategy\CustomPostTypeStrategy;
 
-use Skypress\Component\Mediator\ServiceMediator;
+use Skypress\Component\Mediator\ServiceContainerMediator;
 use Skypress\Component\Service\MediatorService;
 
 
@@ -61,6 +59,8 @@ if(!class_exists('MainProject')){
          */
         protected $services = array();
 
+        protected $sm;
+
         /**
          * @since 0.5
          * @version 0.5
@@ -82,11 +82,9 @@ if(!class_exists('MainProject')){
             $this->local = ($_SERVER['REMOTE_ADDR']=='127.0.0.1') ? true : false;
             $this->constructMediators();
 
-            ServiceFactory::create($config['services']);
-            ManagerFactory::create($config['managers']);
+            $this->setServices($config['services']);
 
-        	$this->services = ServiceFactory::getServices();
-
+            ManagerFactory::create($config['managers']);        	
             $this->managers = ManagerFactory::getManagers();
 
         }
@@ -107,7 +105,7 @@ if(!class_exists('MainProject')){
 
             foreach ($this->getManagers() as $key => $manager):
 
-                if($manager instanceOf iHooks):
+                if($manager instanceOf HooksInterface):
                     $manager->hooks();
                 endif;
 
@@ -115,8 +113,8 @@ if(!class_exists('MainProject')){
 
             foreach ($this->getServices() as $key => $service):
 
-                if($service instanceOf iHooks):
-                    if($service instanceOf iOrder):
+                if($service instanceOf HooksInterface):
+                    if($service instanceOf OrderInterface):
                         $orderLaunch[$service->getOrder()] = $service;
                     else:
                         $service->hooks();
@@ -143,10 +141,106 @@ if(!class_exists('MainProject')){
          * @return services
          */
         public function getServices(){
-        	return $this->services;
+        	return $this->sm->getServices();
         }
 
-         /**
+        /**
+         * Get a service
+         *
+         * @version 0.5
+         * @since 0.5
+         * @access public
+         * @param string $key
+         * @param int $create
+         *
+         * @return service
+         */
+        public function getService($key, $create = 0){
+            $services = $this->getServices();
+            if(array_key_exists($key, $services)):
+                return $services[$key];
+            elseif($create):
+                return $this->createService($key);
+            endif;
+
+            return null;
+
+        }
+
+        /**
+         * Set config services
+         *
+         * @version 0.5
+         * @since 0.5
+         * @access public
+         * @param array $config
+         *
+         */
+        public function setServices($config){
+
+            ServiceFactory::create($config);
+
+        }
+
+        /**
+         * Add a service
+         *
+         * @version 0.5
+         * @since 0.5
+         * @access public
+         *
+         * @param string $key
+         * @param service $value
+         *
+         */
+        public function addService($key, $value){
+
+            ServiceFactory::add($key, $value);
+
+            return $this;
+        }
+
+        /**
+         * Active a service by key
+         *
+         * @version 0.5
+         * @since 0.5
+         * @access public
+         *
+         * @param string $key
+         *
+         */
+        public function activeService($key){
+
+            if($this->getService($key) == null):
+               return $this->createService($key);
+            endif;
+
+            return $this;
+        }
+
+        /**
+         * Create a service
+         *
+         * @version 0.5
+         * @since 0.5
+         * @access private
+         *
+         * @param string $key
+         *
+         */
+        private function createService($key){
+            ServiceFactory::create($key);
+
+            $services = $this->getServices();
+            if(array_key_exists($key,  $services)):
+                return $services[$key];
+            endif;
+
+            return null;
+        }
+
+        /**
          * Get all managers
          *
          * @version 0.5
@@ -159,12 +253,17 @@ if(!class_exists('MainProject')){
             return $this->managers;
         }
 
+        /**
+         * @todo Ce n'est pas au projet de construire les mediators
+         */
         public function constructMediators(){   
             
-            $serviceMediator = new ServiceMediator();
+            $ServiceContainerMediator = new ServiceContainerMediator();
+
+            $this->sm = $ServiceContainerMediator;
 
             $array_mediatorService = array(
-                $serviceMediator,
+                $ServiceContainerMediator,
             );
 
             MediatorService::setMediators($array_mediatorService);

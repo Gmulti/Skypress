@@ -4,8 +4,8 @@ namespace Skypress\Component\Factory;
 
 use Skypress\Component\Entity\CustomPostType;
 use Skypress\Component\Models\iCustomPostType;
-use Skypress\Component\Models\iHooks;
-use Skypress\Component\Models\iCustomPostTypeFactory;
+use Skypress\Component\Models\HooksInterface;
+use Skypress\Component\Models\Factory\CustomPostTypeFactoryInterface;
 
 
 if ( ! class_exists( 'CustomPostTypeFactory' ) ){
@@ -17,7 +17,7 @@ if ( ! class_exists( 'CustomPostTypeFactory' ) ){
 	 * @since 0.5
 	 * @version 0.5
 	 */
-	class CustomPostTypeFactory {
+	class CustomPostTypeFactory implements CustomPostTypeFactoryInterface {
 
 		/**
 		 * Create custom post type

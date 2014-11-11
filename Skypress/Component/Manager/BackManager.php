@@ -5,7 +5,7 @@ namespace Skypress\Component\Manager;
 
 
 
-use Skypress\Component\Models\iHooks;
+use Skypress\Component\Models\HooksInterface;
 
 if(!class_exists('BackManager'))
 {
@@ -17,7 +17,7 @@ if(!class_exists('BackManager'))
 	 * @author Thomas DENEULIN <contact@skypress.fr> 
 	 * 
 	 */
-	class BackManager extends GeneralManager implements iHooks {
+	class BackManager extends GeneralManager implements HooksInterface {
 
 		/**
 		 * Construct
@@ -33,7 +33,7 @@ if(!class_exists('BackManager'))
 		}
 
 		/**
-		 * Implements iHooks
+		 * Implements HooksInterface
 		 *
 		 * @since 0.5
 		 * @version 0.5

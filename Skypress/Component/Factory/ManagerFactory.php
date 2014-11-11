@@ -2,15 +2,14 @@
 
 namespace Skypress\Component\Factory;
 
-use Skypress\Component\Models\iHooks;
+use Skypress\Component\Models\HooksInterface;
 
 
 use Skypress\Component\Manager\GeneralManager;
 use Skypress\Component\Manager\FrontManager;
 use Skypress\Component\Manager\BackManager;
-use Skypress\Component\Manager\AcfManager;
 
-use Skypress\Component\Models\iStaticFactory;
+use Skypress\Component\Models\Factory\StaticFactoryInterface;
 
 
 
@@ -24,7 +23,7 @@ if(!class_exists('ManagerFactory')){
 	 * @author Thomas DENEULIN <contact@skypress.fr>
 	 *
 	 */
-	class ManagerFactory implements iStaticFactory {
+	class ManagerFactory implements StaticFactoryInterface {
 
 		/**
 		 * @since 0.5
@@ -59,9 +58,9 @@ if(!class_exists('ManagerFactory')){
 		 * @static
 		 *
 		 * @param String $key
-		 * @param iHooks $manager
+		 * @param HooksInterface $manager
 		 */
-		public static function setManager( $key, iHooks $manager){
+		public static function setManager( $key, HooksInterface $manager){
 			self::$managers[$key] = $manager;
 			return self::$managers;
 		}
@@ -143,7 +142,7 @@ if(!class_exists('ManagerFactory')){
 	        	endforeach;
 
 	        else:
-	        	throw new \Exception("Votre configuration n'est pas correct");
+	        	throw new \Exception("Your configuration is not correct");
 
 	        endif;
 

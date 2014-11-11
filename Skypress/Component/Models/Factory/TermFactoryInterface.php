@@ -1,6 +1,7 @@
 <?php 
 
-namespace Skypress\Component\Models;
+namespace Skypress\Component\Models\Factory;
+
 
 /**
  *
@@ -10,6 +11,4 @@ namespace Skypress\Component\Models;
  * @author Thomas DENEULIN <contact@skypress.fr> 
  * 
  */
-interface iHelperConfig{
-	public function isEmptyConfig();
-}
+interface TermFactoryInterface {}

@@ -1,34 +1,35 @@
 <?php 
 
+
 namespace Skypress\Component\Models;
 
 /**
  *
+ * Si l'on a besoin de gérer l'ordre d'éxecution d'une classe
+ * 
  * @version 0.5
  * @since 0.5
  * 
  * @author Thomas DENEULIN <contact@skypress.fr> 
  * 
  */
-interface iConfig{
+interface OrderInterface{
 
 	/**
 	 * @version 0.5
  	 * @since 0.5
  	 * @access public
- 	 * 
-	 * @return array
+ 	 * @param int $int
+ 	 *
 	 */
-	public function getConfig();
+	public function setOrder($int);	
 
 	/**
-	 *
 	 * @version 0.5
  	 * @since 0.5
  	 * @access public
  	 *
-	 * @param array $config
+	 * @return int
 	 */
-	public function setConfig($config);	
-
+	public function getOrder();	
 }

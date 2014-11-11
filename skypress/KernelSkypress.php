@@ -5,25 +5,25 @@ namespace Skypress;
 use Skypress\Component\Project\MainTheme;
 use Skypress\Component\Project\MainPlugin;
 
-use Skypress\Component\Mediator\ServiceMediator;
+use Skypress\Component\Mediator\ServiceContainerMediator;
 use Skypress\Component\Service\MediatorService;
 
-if(!class_exists('Kernel')){
+if(!class_exists('KernelSkypress')){
 
 
     /**
-     * Kernel du framework Skypress
+     * KernelSkypress framework Skypress
      *
      * 
-     *     // Exemple d'utilisation
-     *     $theme = Kernel::getInstance('theme');
+     *     // Example
+     *     $theme = KernelSkypress::getInstance('theme');
      *     $theme->execute();
      *
      * @author Thomas DENEULIN <contact@skypress.fr>
      * @since 0.5
      * @version 0.5
      */
-    abstract class Kernel
+    abstract class KernelSkypress
     {
         protected static $theme = null;
 
@@ -57,7 +57,7 @@ if(!class_exists('Kernel')){
                     $config = self::getConfig($type, $namePlugin);
                 else:
                     if(!is_array($config) ):
-                        throw new Exception("Votre configuration doit être un tableau");
+                        throw new Exception("Your configuration must be an array");
                     endif;
                 endif;
 
@@ -76,7 +76,7 @@ if(!class_exists('Kernel')){
                 elseif($type == 'plugin'):
 
                     if($namePlugin == null):
-                        throw new Exception("Il nous faut le nom de votre plugin");
+                        throw new Exception("We need the name of your plugin");
                     else:
 
                         self::$typeFilter = $namePlugin;
@@ -90,7 +90,7 @@ if(!class_exists('Kernel')){
 
                 endif;
             else:
-                throw new Exception("Vous tentez d'instancier un skeleton inconnu");
+                throw new Exception("You try to instantiate an unknown skeleton");
 
             endif;
 
@@ -114,7 +114,7 @@ if(!class_exists('Kernel')){
         public static function getConfigByKey($type, $key, $subkey = '', $namePlugin = null){
 
             $returnConfig = array();
-            $config = Kernel::getConfig($type, $namePlugin);
+            $config = KernelSkypress::getConfig($type, $namePlugin);
             $return = true;
 
             if(array_key_exists($key, $config)):
@@ -132,7 +132,7 @@ if(!class_exists('Kernel')){
             endif;
 
             if(!$return):
-                 throw new Exception("Vous tentez d'accéder à une clé qui n'existe pas");
+                 throw new Exception("You try to access a key that does not exist");
             endif;
 
             return $returnConfig;
@@ -204,15 +204,15 @@ if(!class_exists('Kernel')){
                 ),
             );
 
-            Kernel::$configs = $themeConfig;
+            KernelSkypress::$configs = $themeConfig;
 
             $config = array();
 
             if ($type == 'theme'):
-                $config = apply_filters('skeleton_config_default_theme', Kernel::$configs);
+                $config = apply_filters('skeleton_config_default_theme', KernelSkypress::$configs);
             else:
                 if($namePlugin != null):
-                    $config = apply_filters('skeleton_config_default_plugin_' . $namePlugin, Kernel::$configs);
+                    $config = apply_filters('skeleton_config_default_plugin_' . $namePlugin, KernelSkypress::$configs);
                 endif; 
             endif;
            

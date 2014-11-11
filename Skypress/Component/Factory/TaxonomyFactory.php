@@ -3,7 +3,7 @@
 namespace Skypress\Component\Factory;
 
 use Skypress\Component\Entity\Taxonomy;
-use Skypress\Component\Models\iTaxonomyFactory;
+use Skypress\Component\Models\Factory\TaxonomyFactoryInterface;
 
 
 
@@ -16,7 +16,7 @@ if ( ! class_exists( 'TaxonomyFactory' ) ){
 	 * @since 0.5
 	 * @version 0.5
 	 */
-	class TaxonomyFactory {
+	class TaxonomyFactory implements TaxonomyFactoryInterface {
 
 
 		/**

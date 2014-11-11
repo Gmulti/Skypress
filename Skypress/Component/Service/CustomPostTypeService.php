@@ -2,10 +2,11 @@
 
 namespace Skypress\Component\Service;
 
-use Skypress\Component\Models\iHooks;
-use Skypress\Component\Models\iCustomPostTypeFactory;
-use Skypress\Component\Models\iHelperConfig;
-use Skypress\Component\Models\iConfig;
+use Skypress\Component\Models\HooksInterface;
+use Skypress\Component\Models\Factory\CustomPostTypeFactoryInterface;
+use Skypress\Component\Models\HelperConfigInterface;
+use Skypress\Component\Models\ConfigInterface;
+
 
 
 
@@ -19,7 +20,7 @@ if(!class_exists('CustomPostTypeService')){
 	 * @author Thomas DENEULIN <contact@skypress.fr>
 	 *
 	 */
-	class CustomPostTypeService implements iHooks, iConfig, iHelperConfig {
+	class CustomPostTypeService implements HooksInterface, ConfigInterface, HelperConfigInterface {
 
 		/**
 		 * Liste des CPTS
@@ -30,11 +31,11 @@ if(!class_exists('CustomPostTypeService')){
 		 * @access protected
 		 *
 		 */
-		protected $cpts;
+		protected $cpts = array();
 
 		/**
 		 * Factory de CPT
-		 * @var iCustomPostTypeFactory
+		 * @var CustomPostTypeFactoryInterface
 		 * @version 0.5
 		 * @since 0.5
 		 * @access protected
@@ -50,17 +51,20 @@ if(!class_exists('CustomPostTypeService')){
 		 * @access public
 		 *
 		 * @param array                  $configService
-		 * @param iCustomPostTypeFactory $factory
+		 * @param CustomPostTypeFactoryInterface $factory
 		 */
-		public function __construct($configService, $factory){
+		public function __construct(CustomPostTypeFactoryInterface $factory, $configService = array()){
+		
+			if(!empty($configService)):
+				$this->setConfigs($configService);
+			endif;
 
-			$this->setConfig($configService);
 			$this->factory = $factory;
 
 		}
 
 		/**
-		 * Implements iHooks
+		 * Implements HooksInterface
 		 *
 		 * @version 0.5
 		 * @since 0.5
@@ -69,6 +73,7 @@ if(!class_exists('CustomPostTypeService')){
 		 * @return void
 		 */
 		public function hooks(){
+
 
 			if(!$this->isEmptyConfig()):
 				foreach ($this->cpts as $key => $cpt) {
@@ -132,14 +137,14 @@ if(!class_exists('CustomPostTypeService')){
 		 *
 		 * @param array $config
 		 */
-		public function setConfig($config){
+		public function setConfigs($config){
 
 			if(!empty($config) && is_array($config)):
 
 				foreach ($config as $key => $cpt):
 
 					if (!array_key_exists('slug', $cpt) || empty($cpt['slug'])):
-						throw new \Exception("Votre custom post type doit avoir un slug");
+						throw new \Exception("Your custom post type must have a slug");
 					endif;
 
 					if (!array_key_exists('args', $cpt)):
@@ -150,13 +155,34 @@ if(!class_exists('CustomPostTypeService')){
 						$cpt['labels'] = array();
 					endif;
 
+					array_push($this->cpts, $cpt);
+
 				endforeach;
 
 			endif;
-
-			$this->cpts = $config;
+		
 			return $this;
 		}
+
+		public function setConfig($config){
+
+			if (!array_key_exists('slug', $config) || empty($config['slug'])):
+				throw new \Exception("Your custom post type must have a slug");
+			endif;
+
+			if (!array_key_exists('args', $config)):
+				$config['args'] = array();
+			endif;
+
+			if (!array_key_exists('labels', $config)):
+				$config['labels'] = array();
+			endif;
+
+			array_push($this->cpts, $config);
+
+			return $this;
+		}
+
 
 		/**
 		 * Helper
@@ -170,6 +196,10 @@ if(!class_exists('CustomPostTypeService')){
 		public function isEmptyConfig(){
 			$config = $this->getConfig(); 
 			return ( empty($config) ) ? true : false;
+		}
+
+		public function addCustomPostType($config){
+			$this->setConfig($config);
 		}
 
 	}

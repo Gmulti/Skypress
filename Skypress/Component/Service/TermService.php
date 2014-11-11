@@ -2,13 +2,13 @@
 
 namespace Skypress\Component\Service;
 
-use Skypress\Component\Models\iHooks;
-use Skypress\Component\Models\iTaxonomyFactory;
-use Skypress\Component\Models\iHelperConfig;
-use Skypress\Component\Models\iConfig;
-use Skypress\Component\Models\iOrder;
+use Skypress\Component\Models\HooksInterface;
+use Skypress\Component\Models\Factory\TermFactoryInterface;
+use Skypress\Component\Models\HelperConfigInterface;
+use Skypress\Component\Models\ConfigInterface;
+use Skypress\Component\Models\OrderInterface;
 
-use Skypress\Component\Service\CollegueService;
+use Skypress\Component\Service\ColleagueService;
 
 
 
@@ -23,7 +23,7 @@ if(!class_exists('TermService')){
 	 * @author Thomas DENEULIN <contact@skypress.fr>
 	 *
 	 */
-	class TermService extends CollegueService implements iOrder, iHooks, iConfig, iHelperConfig {
+	class TermService extends ColleagueService implements OrderInterface, HooksInterface, ConfigInterface, HelperConfigInterface {
 
 		/**
 		 * Liste des terms
@@ -51,7 +51,7 @@ if(!class_exists('TermService')){
 		/**
 		 * Factory de Terms
 		 * 
-		 * @var iTaxonomyFactory
+		 * @var TermFactoryInterface
 		 * @version 0.5
 		 * @since 0.5
 		 * @access protected
@@ -77,9 +77,9 @@ if(!class_exists('TermService')){
 		 * @access public
 		 *
 		 * @param array           $configService
-		 * @param iTaxonomyFactory $factory
+		 * @param TermFactoryInterface $factory
 		 */
-		public function __construct($factory, $configService = array()) {
+		public function __construct(TermFactoryInterface $factory, $configService = array()) {
 			$this->factory = $factory;
 			$this->setConfig($configService);
 			
@@ -193,11 +193,11 @@ if(!class_exists('TermService')){
 				foreach ($config as $key => $term):
 
 					if (!array_key_exists('slug', $term) || empty($term['slug'])):
-						throw new \Exception("Votre term doit avoir un slug");
+						throw new \Exception("Your term must have a slug");
 					endif;
 
 					if (!array_key_exists('taxonomies', $term) || empty($term['taxonomies'])):
-						throw new \Exception("Votre term doit avoir un tableau de taxonomy non vide");
+						throw new \Exception("Your term must have a non-empty array of taxonomy");
 					endif;
 
 				endforeach;
@@ -223,7 +223,7 @@ if(!class_exists('TermService')){
 		}
 
 		/**
-		 * Implements iOrder
+		 * Implements OrderInterface
 		 *
 		 * @version 0.5
 		 * @since 0.5
@@ -237,7 +237,7 @@ if(!class_exists('TermService')){
 
 		/**
 		 *
-		 * Implements iOrder
+		 * Implements OrderInterface
 		 * 
 		 * @version 0.5
 		 * @since 0.5
@@ -249,7 +249,7 @@ if(!class_exists('TermService')){
 			if(is_int($order)):
 				$this->order = $order;
 			else:
-				throw new Exception("Le paramètre order doit être un integer");
+				throw new Exception("The order parameter must be an integer");
 			endif;
 
 			

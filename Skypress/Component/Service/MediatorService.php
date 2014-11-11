@@ -2,7 +2,7 @@
 
 namespace Skypress\Component\Service;
 
-use Skypress\Component\Models\iMediator;
+use Skypress\Component\Models\MediatorInterface;
 
 if(!class_exists('MediatorService')){
 
@@ -33,9 +33,9 @@ if(!class_exists('MediatorService')){
  		 * @since 0.5
  		 * @static
  		 * 
-		 * @param iMediator $mediator [description]
+		 * @param MediatorInterface $mediator [description]
 		 */
-		public static function setMediator(iMediator $mediator){
+		public static function setMediator(MediatorInterface $mediator){
 
 			$classname = get_class($mediator);
 
@@ -60,7 +60,7 @@ if(!class_exists('MediatorService')){
 		public static function setMediators($mediators){
 
 			foreach ($mediators as $key => $mediator):
-				if($mediator instanceOf iMediator):
+				if($mediator instanceOf MediatorInterface):
 					self::setMediator($mediator);
 				endif;
 			endforeach;

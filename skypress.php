@@ -38,7 +38,6 @@ $loader->register();
 $loader = new SplClassLoader('Component\Mediator',__DIR__ . '/Skypress');
 $loader->register();
 
-?>
 
 
 

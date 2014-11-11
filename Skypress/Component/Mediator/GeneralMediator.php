@@ -5,10 +5,10 @@
 
 namespace Skypress\Component\Mediator;
 
-use Skypress\Component\Models\iHooks;
-use Skypress\Component\Models\iConfig;
-use Skypress\Component\Models\iMediator;
-use Skypress\Component\Models\iCollegue;
+use Skypress\Component\Models\HooksInterface;
+use Skypress\Component\Models\ConfigInterface;
+use Skypress\Component\Models\MediatorInterface;
+use Skypress\Component\Models\ColleagueInterface;
 
 
 if(!class_exists('GeneralMediator')){
@@ -21,7 +21,7 @@ if(!class_exists('GeneralMediator')){
 	 * @author Thomas DENEULIN <contact@skypress.fr> 
 	 * 
 	 */
-	abstract class GeneralMediator implements iMediator {
+	abstract class GeneralMediator implements MediatorInterface {
 
 		/**
 		 * @since 0.5
@@ -30,7 +30,7 @@ if(!class_exists('GeneralMediator')){
 		 * 
 		 * @var array
 		 */
-		protected $collegues;
+		protected $colleagues = array();
 
 
 		/**
@@ -40,30 +40,30 @@ if(!class_exists('GeneralMediator')){
 		 * @version 0.5
 		 * @access public
 		 * 
-		 * @param  $collegues 
+		 * @param  $colleagues 
 		 */
-		public function __construct($collegues = array()){
+		public function __construct($colleagues = array()){
 				
-			if(!empty($collegues)):
-				$this->collegues = $this->setCollegues();
+			if(!empty($colleagues)):
+				$this->colleagues = $this->setColleagues();
 			endif;
 		}
 
 		/**
-		 * Implements iMediator
+		 * Implements MediatorInterface
 		 *
 		 * @since 0.5
 		 * @version 0.5
 		 * @access public
 		 * 
-		 * @param array $collegues
+		 * @param array $colleagues
 		 */
-		public function setCollegues($collegues){
+		public function setColleagues($colleagues){
 			
-			if(is_array($collegues)):
-				$this->collegues = $collegues;
+			if(is_array($colleagues)):
+				$this->colleagues = $colleagues;
 			else:
-				throw new Exception("Votre argument doit être un tableau");
+				throw new Exception("Your argument should be an array");
 			endif;
 
 			return $this;
@@ -71,7 +71,7 @@ if(!class_exists('GeneralMediator')){
 		}
 
 		/**
-		 * Implements iMediator
+		 * Implements MediatorInterface
 		 *
 		 * @since 0.5
 		 * @version 0.5
@@ -79,31 +79,30 @@ if(!class_exists('GeneralMediator')){
 		 * 
 		 * @return array 
 		 */
-		public function getCollegues(){
-			return $this->collegues;
+		public function getColleagues(){
+			return $this->colleagues;
 		}
 
 		/**
-		 * Implements iMediator
+		 * Implements MediatorInterface
 		 * 
-		 * @param iCollegue $collegue
+		 * @param ColleagueInterface $colleague
 		 *
 		 * @since 0.5
 		 * @version 0.5
 		 * @access public
 		 * 
 		 */
-		public function setCollegue($collegue){
+		public function setColleague($colleague){
 
-			if($collegue instanceOf iCollegue):
 
-				$classname = get_class($collegue);
+			$classname = get_class($colleague);
 
-				if (preg_match('@\\\\([\w]+)$@', $classname, $matches)) {
-			        $classname = $matches[1];
-			    }
+			if (preg_match('@\\\\([\w]+)$@', $classname, $matches)):
+		        $classname = $matches[1];
 
-				$this->collegues[$classname] = $collegue; 
+	
+			$this->colleagues[$classname] = $colleague; 
 
 			endif;
 
@@ -111,7 +110,7 @@ if(!class_exists('GeneralMediator')){
 		}
 
 		/**
-		 * Implements iMediator
+		 * Implements MediatorInterface
 		 * 
 		 * @param  string $key
 		 *
@@ -119,14 +118,14 @@ if(!class_exists('GeneralMediator')){
 		 * @version 0.5
 		 * @access public
 		 * 
-		 * @return iCollegue 
+		 * @return ColleagueInterface 
 		 */
-		public function getCollegue($key){
+		public function getColleague($key){
 
-			$collegues = $this->getCollegues();
+			$colleagues = $this->getColleagues();
 
-			if(array_key_exists($key, $collegues ) ):
-				return  $collegues[$key];
+			if(array_key_exists($key, $colleagues ) ):
+				return  $colleagues[$key];
 			endif;
 
 			return null;

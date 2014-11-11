@@ -4,10 +4,10 @@
 
 namespace Skypress\Component\Service;
 
-use Skypress\Component\Models\iCollegue;
-use Skypress\Component\Models\iMediator;
+use Skypress\Component\Models\ColleagueInterface;
+use Skypress\Component\Models\MediatorInterface;
 
-if(!class_exists('CollegueService')):
+if(!class_exists('ColleagueService')):
 
 	/**
 	 *
@@ -17,37 +17,40 @@ if(!class_exists('CollegueService')):
 	 * @author Thomas DENEULIN <contact@skypress.fr>
 	 *
 	 */
-	abstract class CollegueService implements iCollegue{
+	abstract class ColleagueService implements ColleagueInterface{
 
 		/**
 		 * 
 		 * @version 0.5
  		 * @since 0.5
 		 * @var protected
+		 * @access protected
 		 */
 		protected $mediator;
 
 		/**
-		 * Implements iCollegue
+		 * Implements ColleagueInterface
 		 *
 		 * @version 0.5
  		 * @since 0.5
+ 		 * @access public
  		 * 
-		 * @return iMediator 
+		 * @return MediatorInterface 
 		 */
 		public function getMediator(){
 			return $this->mediator;
 		}
 
 		/**
-		 * Implements iCollegue
+		 * Implements ColleagueInterface
 		 * 
 		 * @version 0.5
  		 * @since 0.5
+ 		 * @access public
  		 * 
-		 * @param iMediator $mediator
+		 * @param MediatorInterface $mediator
 		 */
-		public function setMediator(iMediator $mediator){
+		public function setMediator(MediatorInterface $mediator){
 			$this->mediator = $mediator;
 			return $this;
 		}
