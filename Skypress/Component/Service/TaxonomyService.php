@@ -34,7 +34,7 @@ if(!class_exists('TaxonomyService')){
 		 * @access protected
 		 *
 		 */
-		protected $taxonomies;
+		protected $taxonomies = array();
 
 
 		/**

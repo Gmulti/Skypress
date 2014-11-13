@@ -230,7 +230,8 @@ if(!class_exists('ServiceFactory')){
 
 		 	self::addService($service);
 
-			if($service instanceOf ColleagueInterface):				
+			if($service instanceOf ColleagueInterface):
+				$sc = MediatorService::getMediator('ServiceContainerMediator');			
 				$service->setMediator($sc);
 			endif;
         }
