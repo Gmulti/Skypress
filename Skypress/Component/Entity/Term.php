@@ -150,7 +150,7 @@ if ( ! class_exists( 'Term' ) ){
 		 */
 		public function setTaxonomies($taxonomies){
 
-			$service_taxo = MediatorService::getMediator('ServiceContainerMediator')->getColleague('TaxonomyService');
+			$service_taxo = MediatorService::getMediator('ServiceContainer')->getColleague('TaxonomyService');
 
 			if(is_array($taxonomies)):
 				foreach ($taxonomies as $key => $taxonomy):

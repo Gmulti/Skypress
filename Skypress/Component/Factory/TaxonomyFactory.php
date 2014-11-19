@@ -34,9 +34,9 @@ if ( ! class_exists( 'TaxonomyFactory' ) ){
 		 *
 		 * @return taxonomy
 		 */
-		public function create( $slug, $post_type, $args = array(), $labels = array(), $terms = array() ){
+		public function create( $slug, $post_type, $args = array(), $terms = array() ){
 
-			$taxonomy = new Taxonomy($slug, $post_type, $args, $labels, $terms);
+			$taxonomy = new Taxonomy($slug, $post_type, $args, $terms);
 
 			$this->addTaxonomy($taxonomy);
 
@@ -69,7 +69,7 @@ if ( ! class_exists( 'TaxonomyFactory' ) ){
 		 *
 		 * @return void
 		 */
-		private function registerTaxonomy(Taxonomy $taxonomy){
+		public function registerTaxonomy(Taxonomy $taxonomy){
 
 
 			if(!taxonomy_exists( $taxonomy->getSlug() )){

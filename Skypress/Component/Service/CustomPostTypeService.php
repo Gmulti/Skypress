@@ -7,6 +7,8 @@ use Skypress\Component\Models\Factory\CustomPostTypeFactoryInterface;
 use Skypress\Component\Models\HelperConfigInterface;
 use Skypress\Component\Models\ConfigInterface;
 
+use Skypress\Component\Entity\CustomPostType;
+
 
 
 
@@ -77,7 +79,11 @@ if(!class_exists('CustomPostTypeService')){
 
 			if(!$this->isEmptyConfig()):
 				foreach ($this->cpts as $key => $cpt) {
-					$this->create($cpt['slug'], $cpt['args'], $cpt['labels']);
+					if ($cpt instanceOf CustomPostType):
+						$this->createFromCustomPostType($cpt);
+					else:
+						$this->create($cpt['slug'], $cpt['args']);
+					endif;
 				}
 			endif;
 
@@ -96,8 +102,12 @@ if(!class_exists('CustomPostTypeService')){
 		 *
 		 * @return void
 		 */
-		public function create($slug, $args, $labels){
-			$this->factory->create($slug, $args, $labels);
+		public function create($slug, $args){
+			$this->factory->create($slug, $args);
+		}
+
+		public function createFromCustomPostType(CustomPostType $cpt){
+			$this->factory->registerPostType($cpt);
 		}
 
 		/**
@@ -143,29 +153,48 @@ if(!class_exists('CustomPostTypeService')){
 
 				foreach ($config as $key => $cpt):
 
-					if (!array_key_exists('slug', $cpt) || empty($cpt['slug'])):
-						throw new \Exception("Your custom post type must have a slug");
-					endif;
-
-					if (!array_key_exists('args', $cpt)):
-						$cpt['args'] = array();
-					endif;
-
-					if (!array_key_exists('labels', $cpt)):
-						$cpt['labels'] = array();
+					if (!$cpt instanceOf CustomPostType):
+						$cpt = $this->checkConfig($cpt);
 					endif;
 
 					array_push($this->cpts, $cpt);
 
 				endforeach;
-
 			endif;
 		
 			return $this;
 		}
 
+		/**
+		 * Set config cpt
+		 *
+		 * @version 0.5
+		 * @since 0.5
+		 * @access public
+		 *
+		 * @param array $config
+		 */
 		public function setConfig($config){
 
+			if(!empty($config) && is_array($config)):
+				$config = $this->checkConfig($config);
+			endif;
+
+			array_push($this->cpts, $config);
+
+			return $this;
+		}
+
+		/**
+		 * Set one config taxo
+		 *
+		 * @version 0.5
+		 * @since 0.5
+		 * @access public
+		 *
+		 * @param array $config
+		 */
+		public function checkConfig($config){
 			if (!array_key_exists('slug', $config) || empty($config['slug'])):
 				throw new \Exception("Your custom post type must have a slug");
 			endif;
@@ -178,9 +207,7 @@ if(!class_exists('CustomPostTypeService')){
 				$config['labels'] = array();
 			endif;
 
-			array_push($this->cpts, $config);
-
-			return $this;
+			return $config;
 		}
 
 
@@ -199,7 +226,15 @@ if(!class_exists('CustomPostTypeService')){
 		}
 
 		public function addCustomPostType($config){
-			$this->setConfig($config);
+			if(!is_array($config)):
+				$this->setConfig($config);
+			endif;
+		}
+
+		public function addCustomPostTypes($config){
+			if(is_array($config)):
+				$this->setConfigs($config);
+			endif;
 		}
 
 	}

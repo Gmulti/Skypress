@@ -70,5 +70,19 @@ if ( ! class_exists( 'TermFactory' ) ){
 		}
 
 
+		// private function deleteTerm($taxo){
+		// 	$terms = $taxo->getTerms();
+
+		// 	if(!empty($terms) && is_array($terms)){
+		// 		foreach ($terms as $key => $term) {
+		// 			$term = get_term_by('slug', $term);
+		// 			if($term !== null){
+		// 				wp_delete_term( $term, $taxo->getSlug());
+		// 			}
+		// 		}
+		// 	}
+		// }
+
+
 	}
 }

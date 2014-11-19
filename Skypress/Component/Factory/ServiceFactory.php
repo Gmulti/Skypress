@@ -10,6 +10,7 @@ use Skypress\Component\Service\CustomPostTypeService;
 use Skypress\Component\Service\TaxonomyService;
 use Skypress\Component\Service\MediatorService;
 use Skypress\Component\Service\TermService;
+use Skypress\Component\Service\Utils\ParameterService;
 
 use Skypress\Component\Factory\CustomPostTypeFactory;
 use Skypress\Component\Factory\TaxonomyFactory;
@@ -36,59 +37,19 @@ if(!class_exists('ServiceFactory')){
 	class ServiceFactory implements StaticFactoryInterface {
 
 		/**
-		 * @since 0.5
-		 * @version 0.5
-		 * @access private
-		 *
-		 * @staticvar array
-		 */
-		private static $services = array();
-
-		/**
-		 *
-		 * @since 0.5
-		 * @version 0.5
-		 * @access private
-		 * 
-		 * @staticvar
-		 * 
-		 * @var [type]
-		 */
-		private static $mediator = null;
-
-		
-
-		/**
 		 * Add a service
 		 *
 		 * @since 0.5
 		 * @version 0.5
-		 * @access public
+		 * @access private
 		 * @static
 		 *
 		 * @param String $key
 		 * @param array $service
 		 */
-		public static function addService($service){
-			$sc = MediatorService::getMediator('ServiceContainerMediator');
+		private static function addService($service){
+			$sc = MediatorService::getMediator('ServiceContainer');
 			$sc->setService($service);
-		}
-
-		/**
-		 * Get all services
-		 *
-		 * @since 0.5
-		 * @version 0.5
-		 * @access public
-		 * @static
-		 *
-		 * @param  $configServices
-		 * @return array
-		 */
-		public static function getServices(){
-			$sc = MediatorService::getMediator('ServiceContainerMediator');
-
-			return $sc->getServices();
 		}
 
 		/**
@@ -96,15 +57,14 @@ if(!class_exists('ServiceFactory')){
 		 *
 		 * @since 0.5
 		 * @version 0.5
-		 * @access public
+		 * @access private
 		 * @static
 		 *
 		 * @param  String $key
 		 * @return array      a service
 		 */
-		public static function getService($key){
-			$sc = MediatorService::getMediator('ServiceContainerMediator');
-			
+		private static function getService($key){
+			$sc = MediatorService::getMediator('ServiceContainer');
 			return $sc->getService($key);
 		}
 
@@ -219,6 +179,10 @@ if(!class_exists('ServiceFactory')){
 
 	                break;
 
+	            case 'ParameterService':
+	            	$service = new ParameterService();
+	            	break;
+
 	            default:
 
 	                $service = apply_filters( 'service_' . $key . '_' . KernelSkypress::getTypeFilter(),  '');
@@ -231,7 +195,7 @@ if(!class_exists('ServiceFactory')){
 		 	self::addService($service);
 
 			if($service instanceOf ColleagueInterface):
-				$sc = MediatorService::getMediator('ServiceContainerMediator');			
+				$sc = MediatorService::getMediator('ServiceContainer');			
 				$service->setMediator($sc);
 			endif;
         }

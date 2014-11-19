@@ -95,7 +95,6 @@ if(!class_exists('GeneralMediator')){
 		 */
 		public function setColleague($colleague){
 
-
 			$classname = get_class($colleague);
 
 			if (preg_match('@\\\\([\w]+)$@', $classname, $matches)):

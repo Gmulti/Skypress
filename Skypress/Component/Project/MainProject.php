@@ -15,7 +15,7 @@ use Skypress\Component\Factory\ManagerFactory;
 use Skypress\Component\Strategy\MenuStrategy;
 use Skypress\Component\Strategy\CustomPostTypeStrategy;
 
-use Skypress\Component\Mediator\ServiceContainerMediator;
+use Skypress\Component\Mediator\ServiceContainer;
 use Skypress\Component\Service\MediatorService;
 
 
@@ -81,12 +81,8 @@ if(!class_exists('MainProject')){
             
             $this->local = ($_SERVER['REMOTE_ADDR']=='127.0.0.1') ? true : false;
             $this->constructMediators();
-
             $this->setServices($config['services']);
-
-            ManagerFactory::create($config['managers']);        	
-            $this->managers = ManagerFactory::getManagers();
-
+            $this->createService('ParameterService');
         }
 
 
@@ -102,14 +98,6 @@ if(!class_exists('MainProject')){
         public function execute(){
 
             $orderLaunch = array();
-
-            foreach ($this->getManagers() as $key => $manager):
-
-                if($manager instanceOf HooksInterface):
-                    $manager->hooks();
-                endif;
-
-            endforeach;
 
             foreach ($this->getServices() as $key => $service):
 
@@ -155,8 +143,9 @@ if(!class_exists('MainProject')){
          *
          * @return service
          */
-        public function getService($key, $create = 0){
+        public function getService($key, $create = 1){
             $services = $this->getServices();
+
             if(array_key_exists($key, $services)):
                 return $services[$key];
             elseif($create):
@@ -193,9 +182,10 @@ if(!class_exists('MainProject')){
          * @param service $value
          *
          */
-        public function addService($key, $value){
+        public function addService($service){
 
-            ServiceFactory::add($key, $value);
+            $sc = MediatorService::getMediator('ServiceContainer');
+            $sc->setService($service);
 
             return $this;
         }
@@ -240,30 +230,19 @@ if(!class_exists('MainProject')){
             return null;
         }
 
-        /**
-         * Get all managers
-         *
-         * @version 0.5
-         * @since 0.5
-         * @access public
-         *
-         * @return services
-         */
-        public function getManagers(){
-            return $this->managers;
-        }
+      
 
         /**
          * @todo Ce n'est pas au projet de construire les mediators
          */
         public function constructMediators(){   
             
-            $ServiceContainerMediator = new ServiceContainerMediator();
+            $ServiceContainer = new ServiceContainer();
 
-            $this->sm = $ServiceContainerMediator;
+            $this->sm = $ServiceContainer;
 
             $array_mediatorService = array(
-                $ServiceContainerMediator,
+                $ServiceContainer,
             );
 
             MediatorService::setMediators($array_mediatorService);

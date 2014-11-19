@@ -187,21 +187,7 @@ if(!class_exists('KernelSkypress')){
                             ),
                         ),
                     ),
-                ),
-                'managers' => array(
-                    'back' => array(
-                        'active' => 0,
-                        'construct' => array(
-                            array()
-                        )
-                    ),
-                    'front' => array(
-                        'active' => 0,
-                        'construct' => array(
-                            array()
-                        )
-                    ),
-                ),
+                )
             );
 
             KernelSkypress::$configs = $themeConfig;

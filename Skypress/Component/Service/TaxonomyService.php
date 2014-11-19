@@ -103,7 +103,7 @@ if(!class_exists('TaxonomyService')){
 
 	    	if(!$this->isEmptyConfig()):
 				foreach ($this->taxonomies as $key => $taxo):
-					$this->create($taxo['slug'], $taxo['post_type'], $taxo['args'], $taxo['labels']);
+					$this->create($taxo['slug'], $taxo['post_type'], $taxo['args']);
 				endforeach;
 			endif;
 		}
@@ -113,7 +113,6 @@ if(!class_exists('TaxonomyService')){
 		 *
 		 * @param  string $slug
 		 * @param  array $args
-		 * @param  array $labels
 		 *
 		 * @access public
 		 * @version 0.5
@@ -121,9 +120,9 @@ if(!class_exists('TaxonomyService')){
 		 *
 		 * @return void
 		 */
-		public function create($slug, $post_type, $args, $labels, $terms = array() ){
+		public function create($slug, $post_type, $args, $terms = array() ){
 
-			$this->taxonomiesObject[$slug] = $this->factory->create($slug, $post_type, $args, $labels, $terms);
+			$this->taxonomiesObject[$slug] = $this->factory->create($slug, $post_type, $args, $terms);
 		}
 
 
@@ -200,20 +199,8 @@ if(!class_exists('TaxonomyService')){
 
 				foreach ($config as $key => $taxo):
 
-					if (!array_key_exists('slug', $taxo) || empty($taxo['slug'])):
-						throw new \Exception("Your taxonomy should have a slug");
-					endif;
-
-					if (!array_key_exists('post_type', $taxo) || empty($taxo['post_type'])):
-						throw new \Exception("Your taxonomy should have an array of post types.");
-					endif;
-
-					if (!array_key_exists('args', $taxo)):
-						$taxo['args'] = array();
-					endif;
-
-					if (!array_key_exists('labels', $taxo)):
-						$taxo['labels'] = array();
+					if (!$taxo instanceOf Taxonomy):
+						$taxo = $this->checkConfig($taxo);
 					endif;
 
 					array_push($this->taxonomies, $taxo);
@@ -236,6 +223,43 @@ if(!class_exists('TaxonomyService')){
 		 */
 		public function setConfig($config){
 
+			
+			if(!empty($config) && is_array($config)):
+				$config = $this->checkConfig($config);
+			endif;
+
+			array_push($this->taxonomies, $config);
+
+			return $this;
+		}
+
+		/**
+		 * Add Taxonomy with setConfig
+		 *
+		 * @version 0.5
+		 * @since 0.5
+		 * @access public
+		 * 
+		 * @param (array|Taxonomy) $config
+		 * 
+		 */
+		public function addTaxonomy($config){
+			$this->setConfig($config);
+		}
+
+		/**
+		 * Check config
+		 *
+		 * @version 0.5
+		 * @since 0.5
+		 * @access public
+		 * 
+		 * @param  array $config 
+		 * 
+		 * @return array        
+		 */
+		public function checkConfig($config){
+
 			if (!array_key_exists('slug', $config) || empty($config['slug'])):
 				throw new \Exception("Your custom post type must have a slug");
 			endif;
@@ -252,13 +276,7 @@ if(!class_exists('TaxonomyService')){
 				$config['labels'] = array();
 			endif;
 
-			array_push($this->taxonomies, $config);
-
-			return $this;
-		}
-
-		public function addTaxonomy($config){
-			$this->setConfig($config);
+			return $config;
 		}
 
 		/**

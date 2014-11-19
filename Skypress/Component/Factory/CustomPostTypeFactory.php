@@ -32,9 +32,9 @@ if ( ! class_exists( 'CustomPostTypeFactory' ) ){
 		 *
 		 * @return void
 		 */
-		public function create($slug, $args = array(), $labels = array())
+		public function create($slug, $args = array())
 		{
-			$cpt = new CustomPostType($slug, $args, $labels);
+			$cpt = new CustomPostType($slug, $args);
 			$this->registerPostType($cpt);
 		}
 
@@ -42,25 +42,29 @@ if ( ! class_exists( 'CustomPostTypeFactory' ) ){
 		/**
 		 * Register a custom post type on init action
 		 *
-		 * @param  iCustomPostType $cpt
+		 * @param  CustomPostTypeInterface $cpt
 		 *
 		 * @since 0.5
  		 * @version 0.5
- 		 * @access private
+ 		 * @access public
  		 *
 		 * @return void
 		 */
-		private function registerPostType($cpt){
+		public function registerPostType(CustomPostType $cpt){
 
 			if( !post_type_exists( $cpt->getSlug() ) ) {
 
-				add_action('init', function() use( $cpt ) {
+				$args = $cpt->getArgs();
+		  		$slug = $cpt->getSlug();
 
-			  		$slug = $cpt->getSlug();
-			  		$args = $cpt->getArgs();
+				if(in_array('thumbnail', $args['supports'])):
+					add_action('after_setup_theme',function() use($slug, $args){
+						add_theme_support( 'post-thumbnails', array( $slug ) );
+					});
+		  		endif;
 
+				add_action('init', function() use( $slug, $args ) {
 				 	register_post_type( $slug, $args );
-
 				});
 			}
 		}

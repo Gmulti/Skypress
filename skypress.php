@@ -7,36 +7,30 @@
  * Author: GTD-IT
  */
 
-require_once(__DIR__ . '/skypress/vendor/SplClassLoader.php');
-require_once(__DIR__ . '/skypress/Component/constantes.php');
+require_once(__DIR__ . '/skypress/vendor/ClassLoader/UniversalClassLoader.php');
+require_once(__DIR__ . '/skypress/vendor/ClassLoader/ApcUniversalClassLoader.php');
+
+use Symfony\Component\ClassLoader\ApcUniversalClassLoader;
+use Symfony\Component\ClassLoader\UniversalClassLoader;
 
 
-$loader = new SplClassLoader('Skypress',__DIR__ );
+$loader = new UniversalClassLoader();
+
+$theme = wp_get_theme();
+$name  = $theme->template;
+$dir   = $theme->theme_root . '/' . $name;
+
+define('NAME_THEME_SP',$name);
+define('DIR_THEME_SP', $dir);
+
+
+$loader->registerNamespaces(array(
+    'Skypress' => __DIR__ ,
+    ucfirst($name) => $dir . '/src', 
+));
+
 $loader->register();
 
-$loader = new SplClassLoader('Component\Models',__DIR__ . '/Skypress' );
-$loader->register();
-
-$loader = new SplClassLoader('Component\Factory',__DIR__ . '/Skypress');
-$loader->register();
-
-$loader = new SplClassLoader('Component\Service',__DIR__ . '/Skypress');
-$loader->register();
-
-$loader = new SplClassLoader('Component\Manager',__DIR__ . '/Skypress');
-$loader->register();
-
-$loader = new SplClassLoader('Component\Project',__DIR__ . '/Skypress');
-$loader->register();
-
-$loader = new SplClassLoader('Component\Strategy',__DIR__ . '/Skypress');
-$loader->register();
-
-$loader = new SplClassLoader('Component\Entity',__DIR__ . '/Skypress');
-$loader->register();
-
-$loader = new SplClassLoader('Component\Mediator',__DIR__ . '/Skypress');
-$loader->register();
 
 
 

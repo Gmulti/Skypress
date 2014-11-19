@@ -36,18 +36,8 @@ if ( ! class_exists( 'Taxonomy' ) ){
  		 * @access private
  		 * 
 		 */
-		private $post_type 	= array();
+		private $postType 	= array();
 
-		/**
-		 * Label for taxonomy
-		 * 
-		 * @var array
-		 * @since 0.5
- 		 * @version 0.5
- 		 * @access private
- 		 * 
-		 */
-		private $labels 		= array();
 
 		/**
 		 * Args taxonomy
@@ -76,7 +66,7 @@ if ( ! class_exists( 'Taxonomy' ) ){
 		 * Construct
 		 * 
 		 * @param string $slug      
-		 * @param array $post_type 
+		 * @param array $postType 
 		 * @param array  $labels    
 		 * @param array  $args      
 		 * @param array  $terms
@@ -87,12 +77,11 @@ if ( ! class_exists( 'Taxonomy' ) ){
  		 * @access public
  		 * 
 		 */
-		public function __construct($slug, $post_type, $args = array(), $labels = array(), $terms = array()){
+		public function __construct($slug, $postType, $args = array(),  $terms = array()){
 
 			$this->setSlug( $slug );
-			$this->setPostType( $post_type );
-			$this->setLabels( $labels );
-			$this->setArgs( $labels );
+			$this->setPostType( $postType );
+			$this->setArgs( $args );
 			$this->setTerms( $terms );
 
 		}
@@ -190,54 +179,26 @@ if ( ! class_exists( 'Taxonomy' ) ){
 		 *
 		 * @access public
 		 * 
-		 * @param (string|array) $post_type
+		 * @param (string|array) $postType
 		 *
 		 * @since 0.5
  		 * @version 0.5
  		 * 
 		 */
-		public function setPostType( $post_type ) 
+		public function setPostType( $postType ) 
 		{
-			if(is_array($post_type)):
-				foreach ($post_type as $key => $value) {
-					$this->post_type[] = $value;
+			if(is_array($postType)):
+				foreach ($postType as $key => $value) {
+					$this->postType[] = $value;
 				}
 			else:
-				$this->post_type[] = $post_type;
+				$this->postType[] = $postType;
 			endif;
 			
 			return $this;
 		}
 
-		/**
-		 * Set labels
-		 *
-		 * @access public
-		 * 
-		 * @param array $labels 
-		 *
-		 * @since 0.5
- 		 * @version 0.5
- 		 * 
-		 */
-		public function setLabels($labels){
 
-	    	 $name   = ucwords( str_replace( '_', ' ', $this->getSlug() ) );  
-
-			 // Default
-		     $labels = array_merge(
-			      array(  
-			           'name'                  => $name,  
-			           'singular_name'         => $name,  
-			           'menu_name'             => $name  
-			       )
-			       ,
-			       $labels
-			);
-
-		    $this->labels = $labels;
-			
-		}
 
 		/**
 		 * Set args
@@ -252,16 +213,31 @@ if ( ! class_exists( 'Taxonomy' ) ){
 		public function setArgs($args){
 
 			$args = is_array( $args ) ? $args : array( $args );
+			$args['labels'] = (array_key_exists('labels', $args) && is_array( $args['labels'] ) )? $args['labels'] : $args['labels'] = array();
+
+			$name   = ucwords( str_replace( '_', ' ', $this->getSlug() ) );  
+			
+			$args['labels'] = array_merge(
+			      array(  
+			           'name'                  => $name,  
+			           'singular_name'         => $name,  
+			           'menu_name'             => $name  
+			       )
+			       ,
+			       $args['labels']
+			);
+
 			$args = array_merge(
 				  array(
 				    'hierarchical' => true,
-					'labels' => $this->getLabels(),
 				  )
 				  ,
 				  $args
 			);
 
 			$this->args = $args;
+
+			return $this;
 		}
 
 		/**
@@ -301,7 +277,7 @@ if ( ! class_exists( 'Taxonomy' ) ){
 		 * @return array
 		 */
 		public function getLabels(){
-			return $this->labels;
+			return $this->args['labels'];
 		}
 
 		/**
@@ -314,7 +290,7 @@ if ( ! class_exists( 'Taxonomy' ) ){
 		 * @return array
 		 */
 		public function getPostType(){
-			return $this->post_type;
+			return $this->postType;
 		}
 	}
 }

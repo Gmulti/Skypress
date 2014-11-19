@@ -36,15 +36,6 @@ if ( ! class_exists( 'CustomPostType' ) ){
 		 */
 		private $args 		= array(); 
 
-		/**
-		 * Labels for custom post type
-		 * 
-		 * @since 0.5
- 		 * @version 0.5
- 		 * @access private
-		 * @var array
-		 */
-		private $labels 		= array();
 
 		/**
 		 * Construct
@@ -59,10 +50,9 @@ if ( ! class_exists( 'CustomPostType' ) ){
  		 * @version 0.5
  		 * 
 		 */
-		public function __construct( $slug, $args = array(), $labels = array()){
+		public function __construct( $slug, $args = array()){
 
 			$this->setSlug( $slug );
-			$this->setLabels( $slug, (array)$labels );
 			$this->setArgs( $args );
 
 
@@ -83,32 +73,6 @@ if ( ! class_exists( 'CustomPostType' ) ){
 			$this->slug = sanitize_key( $slug );
 		}
 		
-		/**
-		 * Set labels
-		 *
-		 * @access public
-		 * @param string $slug   
-		 * @param array  $labels 
-		 *
-		 * @since 0.5
- 		 * @version 0.5
- 		 * 
-		 */
-		public function setLabels( $slug, $labels = array() ) 
-		{
-			  
-	    	$name   = ucwords( preg_replace( '#([_-])#', ' ', $slug ) );  
-			  
-		    $this->labels = array_merge(
-			    array(  
-			       'name'                  => $name,  
-		           'singular_name'         => $name,  
-		           'menu_name'             => $name  
-		        )
-			    ,
-			    $labels
-			);
-		}
 
 		/**
 		 * Set args
@@ -124,9 +88,22 @@ if ( ! class_exists( 'CustomPostType' ) ){
 		{
 			
 			$args = is_array( $args ) ? $args : (array)$args;
+			$args['labels'] = (array_key_exists('labels', $args) && is_array( $args['labels'] ) )? $args['labels'] : $args['labels'] = array();
+
+			$name   = ucwords( preg_replace( '#([_-])#', ' ', $this->getSlug() ) );  
+
+			$this->args['labels'] = array_merge(
+			    array(  
+			       'name'                  => $name,  
+		           'singular_name'         => $name,  
+		           'menu_name'             => $name  
+		        )
+			    ,
+			    $args['labels']
+			);
+
 			$this->args = array_merge(
 				  array(
-				    'labels' 		=> $this->labels,
 				    'public'              => true,
 					'show_ui'             => true,
 					'show_in_menu'        => true,
@@ -137,6 +114,9 @@ if ( ! class_exists( 'CustomPostType' ) ){
 				  ,
 				  $args
 			);
+
+
+			return $this;
 		}
 		
 		
@@ -165,7 +145,7 @@ if ( ! class_exists( 'CustomPostType' ) ){
 		public function getArgs(){
 			return $this->args;
 		}
-
+		
 		/**
 		 * Get labels
 		 *
@@ -176,7 +156,7 @@ if ( ! class_exists( 'CustomPostType' ) ){
 		 * @return array
 		 */
 		public function getLabels(){
-			return $this->label;
+			return $this->args['labels'];
 		}
 
 	}
