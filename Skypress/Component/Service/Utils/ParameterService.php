@@ -21,6 +21,7 @@ if(!class_exists('ParameterService')):
 		protected $parameters;
 
 		public function __construct(){
+			$xml = array();
 			if(file_exists(DIR_THEME_SP . '/src/app/parameters.xml')):
 				$xml = (array)simplexml_load_file(DIR_THEME_SP . '/src/app/parameters.xml');
 			endif;
