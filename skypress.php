@@ -7,18 +7,16 @@
  * Author: GTD-IT
  */
 
-require_once(__DIR__ . '/skypress/vendor/ClassLoader/UniversalClassLoader.php');
-require_once(__DIR__ . '/skypress/vendor/ClassLoader/ApcUniversalClassLoader.php');
+require_once(__DIR__ . '/skypress/vendor/autoload.php');
 
-use Symfony\Component\ClassLoader\ApcUniversalClassLoader;
 use Symfony\Component\ClassLoader\UniversalClassLoader;
-
 
 $loader = new UniversalClassLoader();
 
 $theme = wp_get_theme();
 $name  = $theme->template;
 $dir   = $theme->theme_root . '/' . $name;
+
 
 define('NAME_THEME_SP',$name);
 define('DIR_THEME_SP', $dir);

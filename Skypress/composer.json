@@ -1,0 +1,9 @@
+{
+    "name": "skypress",
+    "license": "MIT",
+    "type": "project",
+    "description": "Framework Skypress",
+    "require": {
+        "symfony/class-loader": "2.6" 
+    }
+}

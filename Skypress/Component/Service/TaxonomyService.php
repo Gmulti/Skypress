@@ -7,6 +7,7 @@ use Skypress\Component\Models\Factory\TaxonomyFactoryInterface;
 use Skypress\Component\Models\HelperConfigInterface;
 use Skypress\Component\Models\ConfigInterface;
 use Skypress\Component\Models\OrderInterface;
+use Skypress\Component\Entity\Taxonomy;
 
 use Skypress\Component\Service\ColleagueService;
 
@@ -103,7 +104,11 @@ if(!class_exists('TaxonomyService')){
 
 	    	if(!$this->isEmptyConfig()):
 				foreach ($this->taxonomies as $key => $taxo):
-					$this->create($taxo['slug'], $taxo['post_type'], $taxo['args']);
+					if($taxo instanceOf Taxonomy):
+						$this->createFromTaxonomy($taxo);
+					else:
+						$this->create($taxo['slug'], $taxo['post_type'], $taxo['args']);
+					endif;
 				endforeach;
 			endif;
 		}
@@ -123,6 +128,10 @@ if(!class_exists('TaxonomyService')){
 		public function create($slug, $post_type, $args, $terms = array() ){
 
 			$this->taxonomiesObject[$slug] = $this->factory->create($slug, $post_type, $args, $terms);
+		}
+
+		public function createFromTaxonomy($taxo){
+			$this->factory->addTaxonomy($taxo);
 		}
 
 
@@ -223,7 +232,6 @@ if(!class_exists('TaxonomyService')){
 		 */
 		public function setConfig($config){
 
-			
 			if(!empty($config) && is_array($config)):
 				$config = $this->checkConfig($config);
 			endif;
@@ -233,19 +241,7 @@ if(!class_exists('TaxonomyService')){
 			return $this;
 		}
 
-		/**
-		 * Add Taxonomy with setConfig
-		 *
-		 * @version 0.5
-		 * @since 0.5
-		 * @access public
-		 * 
-		 * @param (array|Taxonomy) $config
-		 * 
-		 */
-		public function addTaxonomy($config){
-			$this->setConfig($config);
-		}
+		
 
 		/**
 		 * Check config
@@ -324,6 +320,26 @@ if(!class_exists('TaxonomyService')){
 
 			
 			return $this;
+		}
+
+		/**
+		 * Add Taxonomy with setConfig
+		 *
+		 * @version 0.5
+		 * @since 0.5
+		 * @access public
+		 * 
+		 * @param array $config
+		 * 
+		 */
+		public function addTaxonomy(Taxonomy $config){
+			$this->setConfig($config);
+		}
+
+		public function addTaxonomies($config){
+			if(is_array($config)):
+				$this->setConfigs($config);
+			endif;
 		}
 	}
 }

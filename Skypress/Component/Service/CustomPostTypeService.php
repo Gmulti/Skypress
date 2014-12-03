@@ -172,7 +172,7 @@ if(!class_exists('CustomPostTypeService')){
 		 * @since 0.5
 		 * @access public
 		 *
-		 * @param array $config
+		 * @param (array|CustomPostType) $config
 		 */
 		public function setConfig($config){
 
@@ -225,10 +225,8 @@ if(!class_exists('CustomPostTypeService')){
 			return ( empty($config) ) ? true : false;
 		}
 
-		public function addCustomPostType($config){
-			if(!is_array($config)):
-				$this->setConfig($config);
-			endif;
+		public function addCustomPostType(CustomPostType $config){
+			$this->setConfig($config);
 		}
 
 		public function addCustomPostTypes($config){

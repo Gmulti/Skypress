@@ -7,6 +7,7 @@ use Skypress\Component\Models\Factory\TermFactoryInterface;
 use Skypress\Component\Models\HelperConfigInterface;
 use Skypress\Component\Models\ConfigInterface;
 use Skypress\Component\Models\OrderInterface;
+use Skypress\Component\Entity\Term;
 
 use Skypress\Component\Service\ColleagueService;
 
@@ -99,9 +100,17 @@ if(!class_exists('TermService')){
 	    	if(!$this->isEmptyConfig()):
 				foreach ($this->terms as $key => $term):
 					$args = (isset($term['args'])) ? $term['args'] : array();
-					$this->create($term['slug'], $term['taxonomies'], $args);
+					if ($term instanceOf Term):
+						$this->createFromTerm($term);
+					else:
+						$this->create($term['slug'], $term['taxonomies'], $args);
+					endif;
 				endforeach;
 			endif;
+		}
+
+		public function createFromTerm(Term $term){
+			$this->factory->createTerm($term);
 		}
 
 		/**
@@ -189,23 +198,52 @@ if(!class_exists('TermService')){
 		public function setConfig($config){
 
 			if(!empty($config) && is_array($config)):
+				$config = $this->checkConfig($config);
+			endif;
+
+			array_push($this->terms, $config);
+
+			return $this;
+		}
+
+		/**
+		 * Set config taxo
+		 *
+		 * @version 0.5
+		 * @since 0.5
+		 * @access public
+		 *
+		 * @param array $config
+		 */
+		public function setConfigs($config){
+
+			if(!empty($config) && is_array($config)):
 
 				foreach ($config as $key => $term):
 
-					if (!array_key_exists('slug', $term) || empty($term['slug'])):
-						throw new \Exception("Your term must have a slug");
+					if (!$term instanceOf Term):
+						$term = $this->checkConfig($term);
 					endif;
 
-					if (!array_key_exists('taxonomies', $term) || empty($term['taxonomies'])):
-						throw new \Exception("Your term must have a non-empty array of taxonomy");
-					endif;
+					array_push($this->terms, $term);
 
 				endforeach;
 
 			endif;
 
-			$this->terms = $config;
 			return $this;
+		}
+
+		public function checkConfig($config){
+			if (!array_key_exists('slug', $config) || empty($config['slug'])):
+				throw new \Exception("Your term must have a slug");
+			endif;
+
+			if (!array_key_exists('taxonomies', $config) || empty($config['taxonomies'])):
+				throw new \Exception("Your term must have a non-empty array of taxonomy");
+			endif;
+
+			return $config;
 		}
 
 		/**
@@ -254,6 +292,16 @@ if(!class_exists('TermService')){
 
 			
 			return $this;
+		}
+
+		public function addTerm(Term $config){
+			$this->setConfig($config);
+		}
+
+		public function addTerms($config){
+			if(is_array($config)):
+				$this->setConfigs($config);
+			endif;
 		}
 	
 	}

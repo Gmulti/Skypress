@@ -26,7 +26,7 @@ if(!class_exists('ParameterService')):
 				$xml = (array)simplexml_load_file(DIR_THEME_SP . '/src/app/parameters.xml');
 			endif;
 			$parametersDefault = (array)simplexml_load_file(WPMU_PLUGIN_DIR . '/Skypress/parameters.xml');
-
+			
 			$this->parameters = array_merge($parametersDefault, $xml);
 		}
 

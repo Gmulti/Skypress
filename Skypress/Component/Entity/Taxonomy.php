@@ -5,7 +5,6 @@ namespace Skypress\Component\Entity;
 use Skypress\Component\Entity\Term;
 
 
-
 if ( ! class_exists( 'Taxonomy' ) ){
 
 	/**

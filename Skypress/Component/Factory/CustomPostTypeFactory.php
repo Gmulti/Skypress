@@ -59,7 +59,7 @@ if ( ! class_exists( 'CustomPostTypeFactory' ) ){
 
 				if(in_array('thumbnail', $args['supports'])):
 					add_action('after_setup_theme',function() use($slug, $args){
-						add_theme_support( 'post-thumbnails', array( $slug ) );
+						// add_theme_support( 'post-thumbnails', array( $slug ) );
 					});
 		  		endif;
 
