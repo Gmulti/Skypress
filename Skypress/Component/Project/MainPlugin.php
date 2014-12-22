@@ -2,13 +2,6 @@
 
 namespace Skypress\Component\Project;
 
-use Skypress\Component\Manager\BackManager;
-use Skypress\Component\Manager\FrontManager;
-use Skypress\Component\Manager\GeneralManager;
-
-use Skypress\Component\Models\iSingletonMain;
-use Skypress\Component\Models\iServiceManager;
-
 
 if(!class_exists('MainPlugin')){
 

@@ -37,7 +37,7 @@ if(!class_exists('ServiceContainer')){
 		 */
 		public function getServices(){
 			$result = $this->getColleagues();
-			if($result == null):
+			if($result === null):
 				return array();
 			endif;
 
@@ -70,5 +70,4 @@ if(!class_exists('ServiceContainer')){
 			$this->setColleague($service);
 		}
 	}
-
 }

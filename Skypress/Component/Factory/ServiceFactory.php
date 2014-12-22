@@ -3,7 +3,6 @@
 namespace Skypress\Component\Factory;
 
 use Skypress\KernelSkypress;
-use Skypress\Component\Models\HooksInterface;
 
 use Skypress\Component\Service\MenuService;
 use Skypress\Component\Service\CustomPostTypeService;
@@ -18,8 +17,6 @@ use Skypress\Component\Factory\TermFactory;
 
 use Skypress\Component\Models\Factory\StaticFactoryInterface;
 use Skypress\Component\Models\ColleagueInterface;
-
-use Skypress\Component\Mediator\ServicesMediator;
 
 
 if(!class_exists('ServiceFactory')){
@@ -88,14 +85,12 @@ if(!class_exists('ServiceFactory')){
 	        		
 	        		foreach ($configServices as $key => $value):
 
-	        			if(self::getService($key) == null):
+	        			if(self::getService($key) === null):
 			        		$value = apply_filters('service_factory_construct_' . $key . '_' . KernelSkypress::getTypeFilter(), $value);
-
 			        		
 			        		if($value['active']):
 
 			        			$valueConstructeur = '';
-			        			$factory = null;
 
 			        			if(isset($value['construct'])):
 
@@ -109,7 +104,7 @@ if(!class_exists('ServiceFactory')){
 			        	endif;
 
 		        	endforeach;
-	        	elseif(is_string($configServices) && self::getService($configServices) == null):
+	        	elseif(is_string($configServices) && self::getService($configServices) === null):
 
 	        		self::createService($configServices);
 
@@ -138,14 +133,11 @@ if(!class_exists('ServiceFactory')){
         	switch ($key) :
 
 				case 'menu':
-
 					$service = new MenuService($valueConstructeur);
-
 					break;
 
 	            case 'custom-post-type':
 	            case 'CustomPostTypeService':
-	  
 	            	// Choose custom post type factory
 					$factory = new CustomPostTypeFactory();
 					$factory = apply_filters( 'factory_' . $key . '_' . KernelSkypress::getTypeFilter(), $factory );
@@ -157,7 +149,6 @@ if(!class_exists('ServiceFactory')){
 
 				case 'taxonomy':
 				case 'TaxonomyService':
-
 					// Choose taxonomy factory
 					$factory = new TaxonomyFactory();
 					$factory = apply_filters( 'factory_' . $key . '_' . KernelSkypress::getTypeFilter(), $factory );
@@ -184,7 +175,6 @@ if(!class_exists('ServiceFactory')){
 	            	break;
 
 	            default:
-
 	                $service = apply_filters( 'service_' . $key . '_' . KernelSkypress::getTypeFilter(),  '');
 	            	break;
 
@@ -200,5 +190,4 @@ if(!class_exists('ServiceFactory')){
 			endif;
         }
 	}
-
 }

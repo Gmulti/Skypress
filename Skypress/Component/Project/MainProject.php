@@ -2,18 +2,10 @@
 
 namespace Skypress\Component\Project;
 
-use Skypress\Component\Manager\BackManager;
-use Skypress\Component\Manager\FrontManager;
-use Skypress\Component\Manager\GeneralManager;
-
 use Skypress\Component\Models\HooksInterface;
 use Skypress\Component\Models\OrderInterface;
 
 use Skypress\Component\Factory\ServiceFactory;
-use Skypress\Component\Factory\ManagerFactory;
-
-use Skypress\Component\Strategy\MenuStrategy;
-use Skypress\Component\Strategy\CustomPostTypeStrategy;
 
 use Skypress\Component\Mediator\ServiceContainer;
 use Skypress\Component\Service\MediatorService;
@@ -202,7 +194,7 @@ if(!class_exists('MainProject')){
          */
         public function activeService($key){
 
-            if($this->getService($key) == null):
+            if($this->getService($key) === null):
                return $this->createService($key);
             endif;
 

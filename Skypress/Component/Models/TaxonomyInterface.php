@@ -11,4 +11,6 @@ namespace Skypress\Component\Models;
  * @author Thomas DENEULIN <contact@skypress.fr> 
  * 
  */
-interface TaxonomyInterface {}
+interface TaxonomyInterface {
+	
+}

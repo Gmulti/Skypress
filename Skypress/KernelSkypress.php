@@ -5,9 +5,6 @@ namespace Skypress;
 use Skypress\Component\Project\MainTheme;
 use Skypress\Component\Project\MainPlugin;
 
-use Skypress\Component\Mediator\ServiceContainerMediator;
-use Skypress\Component\Service\MediatorService;
-
 if(!class_exists('KernelSkypress')){
 
 
@@ -65,7 +62,7 @@ if(!class_exists('KernelSkypress')){
 
                     self::$typeFilter = 'theme';
 
-                    if (self::$theme == null) :
+                    if (self::$theme === null) :
                         $skeleton = self::$theme = new MainTheme($config);
                     else:
                         $skeleton = self::$theme;
@@ -75,7 +72,7 @@ if(!class_exists('KernelSkypress')){
 
                 elseif($type == 'plugin'):
 
-                    if($namePlugin == null):
+                    if($namePlugin === null):
                         throw new Exception("We need the name of your plugin");
                     else:
 

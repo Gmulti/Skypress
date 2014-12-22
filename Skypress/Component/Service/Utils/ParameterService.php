@@ -2,9 +2,6 @@
 
 namespace Skypress\Component\Service\Utils;
 
-use Skypress\Component\Models\ColleagueInterface;
-use Skypress\Component\Models\MediatorInterface;
-
 if(!class_exists('ParameterService')):
 
 	

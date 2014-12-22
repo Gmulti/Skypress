@@ -1,12 +1,7 @@
 <?php 
 
-
-
-
 namespace Skypress\Component\Mediator;
 
-use Skypress\Component\Models\HooksInterface;
-use Skypress\Component\Models\ConfigInterface;
 use Skypress\Component\Models\MediatorInterface;
 use Skypress\Component\Models\ColleagueInterface;
 
@@ -131,5 +126,4 @@ if(!class_exists('GeneralMediator')){
 		}
 	
 	}
-
 }

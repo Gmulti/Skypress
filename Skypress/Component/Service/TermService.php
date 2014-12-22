@@ -128,7 +128,7 @@ if(!class_exists('TermService')){
 		 */
 		public function create($slug, $taxonomies, $args = array() ){
 
-			$this->termsObject[$slug] = $this->factory->create($slug, $taxonomies, $args = array());
+			$this->termsObject[$slug] = $this->factory->create($slug, $taxonomies, $args);
 		}
 
 

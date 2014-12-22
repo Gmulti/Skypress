@@ -3,7 +3,6 @@
 namespace Skypress\Component\Factory;
 
 use Skypress\Component\Entity\Term;
-use Skypress\Component\Models\OrderInterface;
 use Skypress\Component\Models\Factory\TermFactoryInterface;
 
 
@@ -68,20 +67,6 @@ if ( ! class_exists( 'TermFactory' ) ){
 				endforeach;
 			endif;
 		}
-
-
-		// private function deleteTerm($taxo){
-		// 	$terms = $taxo->getTerms();
-
-		// 	if(!empty($terms) && is_array($terms)){
-		// 		foreach ($terms as $key => $term) {
-		// 			$term = get_term_by('slug', $term);
-		// 			if($term !== null){
-		// 				wp_delete_term( $term, $taxo->getSlug());
-		// 			}
-		// 		}
-		// 	}
-		// }
 
 
 	}

@@ -13,4 +13,6 @@ namespace Skypress\Component\Models\Factory;
  * @author Thomas DENEULIN <contact@skypress.fr> 
  * 
  */
-interface CustomPostTypeFactoryInterface {}
+interface CustomPostTypeFactoryInterface {
+	
+}

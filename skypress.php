@@ -3,7 +3,7 @@
  * Plugin Name: Skypress
  * Plugin URI: http://skypress.fr
  * Description: Framework Skypress pour WordPress
- * Version: 0.5
+ * Version: 0.6
  * Author: GTD-IT
  */
 
