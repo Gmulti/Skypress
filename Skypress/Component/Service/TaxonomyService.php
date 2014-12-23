@@ -343,3 +343,4 @@ if(!class_exists('TaxonomyService')){
 		}
 	}
 }
+

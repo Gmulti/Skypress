@@ -3,7 +3,6 @@
 namespace Skypress\Component\Factory;
 
 use Skypress\Component\Entity\CustomPostType;
-use Skypress\Component\Models\HooksInterface;
 use Skypress\Component\Models\Factory\CustomPostTypeFactoryInterface;
 
 

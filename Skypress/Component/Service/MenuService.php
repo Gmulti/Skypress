@@ -91,5 +91,4 @@ if(!class_exists('MenuService')){
 			return $this->menus;
 		}
 	}
-
 }

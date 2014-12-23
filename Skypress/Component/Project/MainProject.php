@@ -222,10 +222,14 @@ if(!class_exists('MainProject')){
             return null;
         }
 
-      
-
         /**
-         * @todo Ce n'est pas au projet de construire les mediators
+         * Construct all mediators
+         *
+         * @version 0.5
+         * @since 0.5
+         * @access public
+         *
+         *
          */
         public function constructMediators(){   
             

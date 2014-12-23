@@ -13,12 +13,9 @@ if(!class_exists('RoleStrategy')){
 	 * 
 	 */
 	class RoleStrategy {
-
 		public function __construct(){
 
 		}
 
-
 	}
-
 }

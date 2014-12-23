@@ -194,7 +194,7 @@ if(!class_exists('KernelSkypress')){
             if ($type == 'theme'):
                 $config = apply_filters('skeleton_config_default_theme', KernelSkypress::$configs);
             else:
-                if($namePlugin != null):
+                if($namePlugin !== null):
                     $config = apply_filters('skeleton_config_default_plugin_' . $namePlugin, KernelSkypress::$configs);
                 endif; 
             endif;

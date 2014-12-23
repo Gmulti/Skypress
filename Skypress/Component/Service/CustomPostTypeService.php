@@ -234,6 +234,6 @@ if(!class_exists('CustomPostTypeService')){
 				$this->setConfigs($config);
 			endif;
 		}
-
 	}
 }
+

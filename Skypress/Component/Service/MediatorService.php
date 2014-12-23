@@ -97,7 +97,5 @@ if(!class_exists('MediatorService')){
 
 			return null;
 		}
-	
 	}
-
 }

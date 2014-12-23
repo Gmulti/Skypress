@@ -303,6 +303,5 @@ if(!class_exists('TermService')){
 				$this->setConfigs($config);
 			endif;
 		}
-	
 	}
 }

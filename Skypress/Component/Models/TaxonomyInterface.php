@@ -12,5 +12,5 @@ namespace Skypress\Component\Models;
  * 
  */
 interface TaxonomyInterface {
-	
+
 }

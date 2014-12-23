@@ -57,5 +57,5 @@ if(!class_exists('ColleagueService')):
 
 	}
 
-
 endif;
+

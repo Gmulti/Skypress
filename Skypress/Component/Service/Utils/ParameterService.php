@@ -34,9 +34,6 @@ if(!class_exists('ParameterService')):
 
 			return null;
 		}
-		
-
 	}
-
 
 endif;

@@ -12,5 +12,5 @@ namespace Skypress\Component\Models\Factory;
  * 
  */
 interface TaxonomyFactoryInterface {
-	
+
 }

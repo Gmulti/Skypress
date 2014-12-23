@@ -2,9 +2,6 @@
 
 namespace Skypress\Component\Models\Factory;
 
-// use Skypress\Component\Models\iFactory;
-
-
 /**
  *
  * @version 0.5
@@ -14,5 +11,5 @@ namespace Skypress\Component\Models\Factory;
  * 
  */
 interface CustomPostTypeFactoryInterface {
-	
+
 }
