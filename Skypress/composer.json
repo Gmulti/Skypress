@@ -4,6 +4,8 @@
     "type": "project",
     "description": "Framework Skypress",
     "require": {
-        "symfony/class-loader": "2.6" 
+        "symfony/class-loader": "2.6",
+        "symfony/dom-crawler": "3.0.*@dev",
+        "symfony/css-selector": "3.0.*@dev"
     }
 }

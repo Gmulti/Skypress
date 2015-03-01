@@ -102,6 +102,8 @@ if(!class_exists('TaxonomyService')){
 		public function hooks()
 		{
 
+			$this->setConfigsParameters();
+
 	    	if(!$this->isEmptyConfig()):
 				foreach ($this->taxonomies as $key => $taxo):
 					if($taxo instanceOf Taxonomy):
@@ -111,6 +113,25 @@ if(!class_exists('TaxonomyService')){
 					endif;
 				endforeach;
 			endif;
+
+			return $this;
+		}
+
+		/**
+		 * Set Taxonomies by Parameters file
+		 *
+		 * @version 0.6
+		 * @since 0.6
+		 * @access private
+		 *
+		 */
+		private function setConfigsParameters(){
+			$taxonomies = $this->getService('ParameterService')->getTaxonomies();
+
+			foreach ($taxonomies as $key => $taxonomy):
+				$this->setConfig($taxonomy);
+			endforeach;
+
 		}
 
 		/**

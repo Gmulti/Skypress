@@ -2,6 +2,7 @@
 
 namespace Skypress\Component\Project;
 
+use Skypress\KernelSkypress;
 use Skypress\Component\Models\HooksInterface;
 use Skypress\Component\Models\OrderInterface;
 
@@ -25,23 +26,7 @@ if(!class_exists('MainProject')){
      */
     abstract class MainProject
     {
-        /**
-         *
-         * @since 0.5
-         * @version 0.5
-         * @access protected
-         * @varstatic
-         *
-         */
-        protected static $instance;
-
-        /**
-         * @since 0.5
-         * @version 0.5
-         * @var array
-         * @access protected
-         */
-        protected $managers = array();
+   
 
         /**
          * @since 0.5
@@ -51,7 +36,13 @@ if(!class_exists('MainProject')){
          */
         protected $services = array();
 
-        protected $sm;
+        /**
+         * @since 0.6
+         * @version 0.6
+         * @var array
+         * @access protected
+         */
+        protected $serviceMediator;
 
         /**
          * @since 0.5
@@ -70,11 +61,12 @@ if(!class_exists('MainProject')){
          * @access private
          */
         public function __construct($config) {
-            
+           
             $this->local = ($_SERVER['REMOTE_ADDR']=='127.0.0.1') ? true : false;
             $this->constructMediators();
+            $this->setServicesDefault();
             $this->setServices($config['services']);
-            $this->createService('ParameterService');
+            
         }
 
 
@@ -121,7 +113,7 @@ if(!class_exists('MainProject')){
          * @return services
          */
         public function getServices(){
-        	return $this->sm->getServices();
+        	return $this->serviceMediator->getServices();
         }
 
         /**
@@ -137,7 +129,7 @@ if(!class_exists('MainProject')){
          */
         public function getService($key, $create = 1){
             $services = $this->getServices();
-
+            
             if(array_key_exists($key, $services)):
                 return $services[$key];
             elseif($create):
@@ -161,6 +153,18 @@ if(!class_exists('MainProject')){
 
             ServiceFactory::create($config);
 
+        }
+
+        /**
+         * Set config services default
+         *
+         * @version 0.6
+         * @since 0.6
+         * @access private
+         *
+         */
+        private function setServicesDefault(){
+            ServiceFactory::createServicesDefault();
         }
 
         /**
@@ -233,15 +237,15 @@ if(!class_exists('MainProject')){
          */
         public function constructMediators(){   
             
-            $ServiceContainer = new ServiceContainer();
+            $serviceContainer = new ServiceContainer();
 
-            $this->sm = $ServiceContainer;
+            $this->serviceMediator = $serviceContainer;
 
-            $array_mediatorService = array(
-                $ServiceContainer,
+            $arrayMediatorService = array(
+                $serviceContainer,
             );
 
-            MediatorService::setMediators($array_mediatorService);
+            MediatorService::setMediators($arrayMediatorService);
         }
 
 

@@ -54,7 +54,7 @@ if(!class_exists('ServiceContainer')){
 		 * @param string $key 
 		 */
 		public function getService($key){
-			$this->getColleague($key);
+			return $this->getColleague($key);
 		}
 
 		/**
@@ -68,6 +68,7 @@ if(!class_exists('ServiceContainer')){
 		 */
 		public function setService($service){
 			$this->setColleague($service);
+			return $this;
 		}
 	}
 }

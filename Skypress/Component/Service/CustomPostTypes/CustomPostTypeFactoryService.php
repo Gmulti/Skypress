@@ -1,6 +1,6 @@
 <?php
 
-namespace Skypress\Component\Service;
+namespace Skypress\Component\Service\CustomPostTypes;
 
 use Skypress\Component\Models\HooksInterface;
 use Skypress\Component\Models\Factory\CustomPostTypeFactoryInterface;
@@ -8,21 +8,21 @@ use Skypress\Component\Models\HelperConfigInterface;
 use Skypress\Component\Models\ConfigInterface;
 
 use Skypress\Component\Entity\CustomPostType;
+use Skypress\Component\Service\ColleagueService;
 
 
 
 
-
-if(!class_exists('CustomPostTypeService')){
+if(!class_exists('CustomPostTypeFactoryService')){
 	/**
 	 *
-	 * @version 0.5
+	 * @version 0.6
 	 * @since 0.5
 	 *
 	 * @author Thomas DENEULIN <contact@skypress.fr>
 	 *
 	 */
-	class CustomPostTypeService implements HooksInterface, ConfigInterface, HelperConfigInterface {
+	class CustomPostTypeFactoryService extends ColleagueService implements HooksInterface, ConfigInterface, HelperConfigInterface {
 
 		/**
 		 * Liste des CPTS
@@ -76,6 +76,7 @@ if(!class_exists('CustomPostTypeService')){
 		 */
 		public function hooks(){
 
+			$this->setConfigsParameters();
 
 			if(!$this->isEmptyConfig()):
 				foreach ($this->cpts as $key => $cpt) {
@@ -90,7 +91,7 @@ if(!class_exists('CustomPostTypeService')){
 		}
 
 		/**
-		 * Appelle la factory de CPT
+		 * Call factory de CPT
 		 *
 		 * @param  string $slug
 		 * @param  array $args
@@ -106,6 +107,16 @@ if(!class_exists('CustomPostTypeService')){
 			$this->factory->create($slug, $args);
 		}
 
+		/**
+		 * 
+		 * @param  CustomPostType $labels
+		 *
+		 * @access public
+		 * @version 0.6
+		 * @since 0.6
+		 *
+		 * @return void
+		 */
 		public function createFromCustomPostType(CustomPostType $cpt){
 			$this->factory->registerPostType($cpt);
 		}
@@ -163,6 +174,24 @@ if(!class_exists('CustomPostTypeService')){
 			endif;
 		
 			return $this;
+		}
+
+		/**
+		 * Set CPTS by Parameters file
+		 *
+		 * @version 0.6
+		 * @since 0.6
+		 * @access private
+		 *
+		 */
+		private function setConfigsParameters(){
+
+			$cpts = $this->getService('ParameterService')->getCustomPostTypes();
+
+			foreach ($cpts as $key => $cpt):
+				$this->setConfig($cpt);
+			endforeach;
+
 		}
 
 		/**
@@ -225,10 +254,24 @@ if(!class_exists('CustomPostTypeService')){
 			return ( empty($config) ) ? true : false;
 		}
 
+		/**
+	 	 * Add custom post type with object
+	 	 *
+		 * @version 0.6
+		 * @since 0.6
+		 * @access public 
+		 */
 		public function addCustomPostType(CustomPostType $config){
 			$this->setConfig($config);
 		}
 
+		/**
+	 	 * Add multiple custom post type with object
+	 	 *
+		 * @version 0.6
+		 * @since 0.6
+		 * @access public 
+		 */
 		public function addCustomPostTypes($config){
 			if(is_array($config)):
 				$this->setConfigs($config);

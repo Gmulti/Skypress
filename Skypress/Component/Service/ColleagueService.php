@@ -42,6 +42,31 @@ if(!class_exists('ColleagueService')):
 		}
 
 		/**
+		 * Return all services in Service Container
+		 *
+		 * @version 0.6
+ 		 * @since 0.6
+ 		 * @access public
+ 		 * 
+		 */
+		public function getServices(){
+			return $this->mediator->getServices();
+		}
+
+		/**
+		 * Return a service in Service Container
+		 *
+		 * @version 0.6
+ 		 * @since 0.6
+ 		 * @access public
+ 		 * @param string $key
+ 		 * 
+		 */
+		public function getService($key){
+			return $this->mediator->getService($key);
+		}
+
+		/**
 		 * Implements ColleagueInterface
 		 * 
 		 * @version 0.5

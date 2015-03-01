@@ -27,7 +27,7 @@ if(!class_exists('TermService')){
 	class TermService extends ColleagueService implements OrderInterface, HooksInterface, ConfigInterface, HelperConfigInterface {
 
 		/**
-		 * Liste des terms
+		 * List terms
 		 *
 		 * @var array
 		 * @version 0.5
@@ -39,7 +39,7 @@ if(!class_exists('TermService')){
 
 
 		/**
-		 * Liste des objets terms
+		 * List terms object
 		 *
 		 * @var array
 		 * @version 0.5
@@ -50,7 +50,7 @@ if(!class_exists('TermService')){
 		protected $termsObject;
 
 		/**
-		 * Factory de Terms
+		 * Factory of Terms
 		 * 
 		 * @var TermFactoryInterface
 		 * @version 0.5
@@ -144,7 +144,7 @@ if(!class_exists('TermService')){
 		 *
 		 * @return (array|Taxonomy)
 		 */
-		public function getterms(){
+		public function getTerms(){
 			return $this->termsObject;
 		}
 
@@ -294,14 +294,36 @@ if(!class_exists('TermService')){
 			return $this;
 		}
 
+		/**
+		 * Add term
+		 *
+		 * @version 0.5
+		 * @since 0.5
+		 * @access public
+		 *
+		 * @param Term $config
+		 *
+		 */
 		public function addTerm(Term $config){
 			$this->setConfig($config);
+			return $this
 		}
 
+		/**
+		 * Add terms
+		 *
+		 * @version 0.5
+		 * @since 0.5
+		 * @access public
+		 *
+		 * @param (Term|array) $config
+		 *
+		 */
 		public function addTerms($config){
 			if(is_array($config)):
 				$this->setConfigs($config);
 			endif;
+			return $this;
 		}
 	}
 }

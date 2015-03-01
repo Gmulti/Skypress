@@ -88,7 +88,22 @@ if ( ! class_exists( 'CustomPostType' ) ){
 		{
 			
 			$args = is_array( $args ) ? $args : (array)$args;
-			$args['labels'] = (array_key_exists('labels', $args) && is_array( $args['labels'] ) )? $args['labels'] : $args['labels'] = array();
+			
+			if(array_key_exists('labels', $args)):
+				// Transform labels class in array
+				if(is_object($args['labels'])):
+					$args['labels'] = (array) $args['labels'];
+				endif;
+			else:
+				$args['labels'] = array();
+			endif;
+			
+			if(array_key_exists('cap', $args)):
+				// Transform cap class in array
+				if(is_object($args['cap'])):
+					$args['cap'] = (array) $args['cap'];
+				endif;
+			endif;
 
 			$name   = ucwords( preg_replace( '#([_-])#', ' ', $this->getSlug() ) );  
 

@@ -5,6 +5,9 @@ namespace Skypress;
 use Skypress\Component\Project\MainTheme;
 use Skypress\Component\Project\MainPlugin;
 
+use Skypress\Component\Mediator\ServiceContainerMediator;
+use Skypress\Component\Service\MediatorService;
+
 if(!class_exists('KernelSkypress')){
 
 
@@ -43,9 +46,7 @@ if(!class_exists('KernelSkypress')){
          */
         public static function getInstance($type, $config = array(), $namePlugin = null)
         {
-
             $skeleton = false;
-
 
 
             if(in_array($type, array('theme','plugin'))):
@@ -54,7 +55,7 @@ if(!class_exists('KernelSkypress')){
                     $config = self::getConfig($type, $namePlugin);
                 else:
                     if(!is_array($config) ):
-                        throw new Exception("Your configuration must be an array");
+                        throw new \Exception("Your configuration must be an array");
                     endif;
                 endif;
 
@@ -62,7 +63,7 @@ if(!class_exists('KernelSkypress')){
 
                     self::$typeFilter = 'theme';
 
-                    if (self::$theme === null) :
+                    if (self::$theme == null) :
                         $skeleton = self::$theme = new MainTheme($config);
                     else:
                         $skeleton = self::$theme;
@@ -72,8 +73,8 @@ if(!class_exists('KernelSkypress')){
 
                 elseif($type == 'plugin'):
 
-                    if($namePlugin === null):
-                        throw new Exception("We need the name of your plugin");
+                    if($namePlugin == null):
+                        throw new \Exception("We need the name of your plugin");
                     else:
 
                         self::$typeFilter = $namePlugin;
@@ -81,13 +82,13 @@ if(!class_exists('KernelSkypress')){
                         if(array_key_exists($namePlugin, self::$plugins)):
                             $skeleton = self::$plugins[$namePlugin];
                         else:
-                            $skeleton = self::$plugins[$namePlugin][] = new MainPlugin($config);
+                            $skeleton = self::$plugins[$namePlugin] = new MainPlugin($config);
                         endif;
                     endif;
 
                 endif;
             else:
-                throw new Exception("You try to instantiate an unknown skeleton");
+                throw new \Exception("You try to instantiate an unknown skeleton");
 
             endif;
 
@@ -129,7 +130,7 @@ if(!class_exists('KernelSkypress')){
             endif;
 
             if(!$return):
-                 throw new Exception("You try to access a key that does not exist");
+                 throw new \Exception("You try to access a key that does not exist");
             endif;
 
             return $returnConfig;
@@ -194,7 +195,7 @@ if(!class_exists('KernelSkypress')){
             if ($type == 'theme'):
                 $config = apply_filters('skeleton_config_default_theme', KernelSkypress::$configs);
             else:
-                if($namePlugin !== null):
+                if($namePlugin != null):
                     $config = apply_filters('skeleton_config_default_plugin_' . $namePlugin, KernelSkypress::$configs);
                 endif; 
             endif;
@@ -230,9 +231,20 @@ if(!class_exists('KernelSkypress')){
             return self::$plugins;
         }
 
+        /**
+         * Return type filter
+         *
+         * @since 0.5
+         * @version 0.5
+         * @static
+         * @access public
+         * 
+         * @return array
+         */
         public static function getTypeFilter(){
             return self::$typeFilter;
         }
 
     }
+
 }

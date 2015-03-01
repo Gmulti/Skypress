@@ -94,9 +94,8 @@ if(!class_exists('GeneralMediator')){
 
 			if (preg_match('@\\\\([\w]+)$@', $classname, $matches)):
 		        $classname = $matches[1];
-
 	
-			$this->colleagues[$classname] = $colleague; 
+				$this->colleagues[$classname] = $colleague; 
 
 			endif;
 
