@@ -21,7 +21,7 @@ class Option
 	}
 
 	public function getOption($key){
-	
+
 		if(array_key_exists($key, $this->options)):
 			return $this->options[$key];
 		endif;
@@ -48,5 +48,4 @@ class Option
 	public function getOptionSave(){
 		return $this->optionSave;
 	}
-	
 }

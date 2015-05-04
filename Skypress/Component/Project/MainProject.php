@@ -2,7 +2,6 @@
 
 namespace Skypress\Component\Project;
 
-use Skypress\KernelSkypress;
 use Skypress\Component\Models\HooksInterface;
 use Skypress\Component\Models\OrderInterface;
 
@@ -16,7 +15,7 @@ if(!class_exists('MainProject')){
 
     /**
      * Abstract Main project
-     * 
+     *
      * @version 0.5
      * @since 0.5
      * @abstract
@@ -26,7 +25,7 @@ if(!class_exists('MainProject')){
      */
     abstract class MainProject
     {
-   
+
 
         /**
          * @since 0.5
@@ -61,12 +60,12 @@ if(!class_exists('MainProject')){
          * @access private
          */
         public function __construct($config) {
-           
+
             $this->local = ($_SERVER['REMOTE_ADDR']=='127.0.0.1') ? true : false;
             $this->constructMediators();
             $this->setServicesDefault();
             $this->setServices($config['services']);
-            
+
         }
 
 
@@ -129,7 +128,7 @@ if(!class_exists('MainProject')){
          */
         public function getService($key, $create = 1){
             $services = $this->getServices();
-            
+
             if(array_key_exists($key, $services)):
                 return $services[$key];
             elseif($create):
@@ -235,8 +234,8 @@ if(!class_exists('MainProject')){
          *
          *
          */
-        public function constructMediators(){   
-            
+        public function constructMediators(){
+
             $serviceContainer = new ServiceContainer();
 
             $this->serviceMediator = $serviceContainer;

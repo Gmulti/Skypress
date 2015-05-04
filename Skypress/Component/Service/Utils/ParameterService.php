@@ -1,10 +1,8 @@
-<?php 
+<?php
 
 namespace Skypress\Component\Service\Utils;
 
 use Skypress\KernelSkypress;
-use Skypress\Component\Models\ColleagueInterface;
-use Skypress\Component\Models\MediatorInterface;
 use Skypress\Component\Models\Strategy\StrategyInterface;
 use Skypress\Component\Models\Strategy\ParameterInterface;
 use Skypress\Component\Models\Strategy\XMLInterface;
@@ -14,7 +12,7 @@ use Skypress\Component\Models\Strategy\HooksInterface;
 
 if(!class_exists('ParameterService')):
 
-	
+
 	/**
 	 *
 	 * @version 0.6
@@ -23,7 +21,7 @@ if(!class_exists('ParameterService')):
 	 * @author Thomas DENEULIN <contact@skypress.fr>
 	 *
 	 */
-	class ParameterService implements ArrayStrategiesInterface {
+	class ParameterService implements ArrayStrategiesInterface, HooksInterface {
 
 		/**
 		 *
@@ -50,13 +48,13 @@ if(!class_exists('ParameterService')):
 		 * @version 0.6
 		 * @since 0.6
 		 *
-		 * @access public 
+		 * @access public
 		 * @param array $strategies
 		 */
 		public function __construct(array $strategies = array()){
 
 			// Construct default parameters
-			$this->fileDefault = WPMU_PLUGIN_DIR . '/Skypress/parameters.xml';		
+			$this->fileDefault = WPMU_PLUGIN_DIR . '/Skypress/parameters.xml';
 
 			// Construct parameters externaly
 			$this->constructFileExt();
@@ -75,9 +73,9 @@ if(!class_exists('ParameterService')):
 						$this->strategies[$classname] = $strategy;
 					endif;
 
-				endif;	
+				endif;
 			endforeach;
-			
+
 
 		}
 
@@ -86,10 +84,10 @@ if(!class_exists('ParameterService')):
 		 * @version 0.6
 		 * @since 0.6
 		 *
-		 * @access public 
+		 * @access public
 		 */
 		public function hooks(){
-			
+
 		}
 
 		/**
@@ -98,7 +96,7 @@ if(!class_exists('ParameterService')):
 		 * @version 0.6
 		 * @since 0.6
 		 *
-		 * @access public 
+		 * @access public
 		 *
 		 */
 		public function getFileExt(){
@@ -111,25 +109,25 @@ if(!class_exists('ParameterService')):
 	 	 *
 		 * @version 0.6
 		 * @since 0.6
-		 * @access public 
+		 * @access public
 		 */
 		public function getFileDefault(){
 			return $this->fileDefault;
 		}
 
 		/**
-	 	 * Add file for a strategy 
+	 	 * Add file for a strategy
 	 	 *
 		 * @version 0.6
 		 * @since 0.6
 		 *
-		 * @access private 
+		 * @access private
 		 * @param XMLInterface $strategy
 		 * @param string $classname
 		 *
 		 */
 		private function addFileOnStrategyXML(XMLInterface $strategy, $classname){
-			
+
 			switch ($classname) {
 				case 'CustomPostTypeXMLParameter':
 					$strategy->addFile($this->getFileExt());
@@ -138,7 +136,7 @@ if(!class_exists('ParameterService')):
 				case 'TaxonomyXMLParameter':
 					$strategy->addFile($this->getFileExt());
 					break;
-				
+
 				case 'XMLStrategy':
 					$strategy->addFile($this->getFileDefault());
 					break;
@@ -158,7 +156,7 @@ if(!class_exists('ParameterService')):
 	 	 *
 		 * @version 0.6
 		 * @since 0.6
-		 * @access private 
+		 * @access private
 		 */
 		private function constructFileExt(){
 
@@ -170,7 +168,7 @@ if(!class_exists('ParameterService')):
 
 					endif;
 					break;
-				
+
 				default:
 					if(file_exists(WP_PLUGIN_DIR . '/' . KernelSkypress::getTypeFilter() . '/app/config/parameters.xml')):
 						$this->fileExt = WP_PLUGIN_DIR . '/' . KernelSkypress::getTypeFilter() . '/app/config/parameters.xml';
@@ -185,7 +183,7 @@ if(!class_exists('ParameterService')):
 	 	 *
 		 * @version 0.6
 		 * @since 0.6
-		 * @access public 
+		 * @access public
 		 */
 		public function getCustomPostTypes(){
 
@@ -200,7 +198,7 @@ if(!class_exists('ParameterService')):
 	 	 *
 		 * @version 0.6
 		 * @since 0.6
-		 * @access public 
+		 * @access public
 		 */
 		public function getTaxonomies(){
 			$taxonomyStrat = $this->getStrategy('TaxonomyXMLParameter');
@@ -214,11 +212,11 @@ if(!class_exists('ParameterService')):
 	 	 *
 		 * @version 0.6
 		 * @since 0.6
-		 * @access public 
+		 * @access public
 		 * @param string $key
 		 */
 		public function getParameter($key){
-		
+
 			$paramXMLStrat = $this->getStrategy('ParameterXMLStrategy');
 
 			if($paramXMLStrat !== null):
@@ -234,7 +232,7 @@ if(!class_exists('ParameterService')):
 		 * @version 0.6
 		 * @since 0.6
 		 *
-		 * @access public 
+		 * @access public
 		 * @param string $key
 		 */
 		public function getStrategy($key){
@@ -251,7 +249,7 @@ if(!class_exists('ParameterService')):
 	 	 *
 		 * @version 0.6
 		 * @since 0.6
-		 * @access public 
+		 * @access public
 		 */
 		public function getStrategies(){
 			return $this->strategies;
@@ -262,7 +260,7 @@ if(!class_exists('ParameterService')):
 	 	 *
 		 * @version 0.6
 		 * @since 0.6
-		 * @access public 
+		 * @access public
 		 */
 		public function setStrategy($key, StrategyInterface $strategy){
 			$this->strategies[$key] = $strategy;
@@ -273,10 +271,10 @@ if(!class_exists('ParameterService')):
 	 	 *
 		 * @version 0.6
 		 * @since 0.6
-		 * @access public 
+		 * @access public
 		 */
 		public function getServicesCheckConfig(){
-			
+
 			$services = array();
 			if($this->getFileExt() !== null):
 				foreach ($this->getStrategies() as $key => $strategy):
@@ -288,9 +286,8 @@ if(!class_exists('ParameterService')):
 
 			return $services;
 		}
-		
+
 
 	}
-
 
 endif;

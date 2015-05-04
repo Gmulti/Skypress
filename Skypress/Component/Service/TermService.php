@@ -51,7 +51,7 @@ if(!class_exists('TermService')){
 
 		/**
 		 * Factory of Terms
-		 * 
+		 *
 		 * @var TermFactoryInterface
 		 * @version 0.5
 		 * @since 0.5
@@ -61,11 +61,11 @@ if(!class_exists('TermService')){
 		protected $factory;
 
 		/**
-		 * 
+		 *
 		 * @version 0.5
  		 * @since 0.5
  		 * @access protected
- 		 * 
+ 		 *
 		 * @var integer
 		 */
 		protected $order = 2;
@@ -83,7 +83,7 @@ if(!class_exists('TermService')){
 		public function __construct(TermFactoryInterface $factory, $configService = array()) {
 			$this->factory = $factory;
 			$this->setConfig($configService);
-			
+
 
 		}
 
@@ -266,7 +266,7 @@ if(!class_exists('TermService')){
 		 * @version 0.5
 		 * @since 0.5
 		 * @access public
-		 * 
+		 *
 		 * @return int
 		 */
 		public function getOrder(){
@@ -276,12 +276,12 @@ if(!class_exists('TermService')){
 		/**
 		 *
 		 * Implements OrderInterface
-		 * 
+		 *
 		 * @version 0.5
 		 * @since 0.5
 		 * @access public
-		 *         
-		 * @param int $order 
+		 *
+		 * @param int $order
 		 */
 		public function setOrder($order){
 			if(is_int($order)):
@@ -290,7 +290,7 @@ if(!class_exists('TermService')){
 				throw new Exception("The order parameter must be an integer");
 			endif;
 
-			
+
 			return $this;
 		}
 
@@ -306,7 +306,7 @@ if(!class_exists('TermService')){
 		 */
 		public function addTerm(Term $config){
 			$this->setConfig($config);
-			return $this
+			return $this;
 		}
 
 		/**

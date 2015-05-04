@@ -31,9 +31,9 @@ if(!class_exists('MainPlugin')){
 
 
 	    public function execute(){
-	    	
+
 	        parent::execute();
-	        
+
 	        foreach ($this->getClasses() as $key => $class):
 	            if ($class instanceOf HooksInterface):
 	                $class->hooks();
@@ -64,8 +64,6 @@ if(!class_exists('MainPlugin')){
 	            throw new \Exception("This class " . get_class($class) . " already exist");
 	        endif;
 	    }
-
-
 
     }
 

@@ -17,6 +17,5 @@ class OptionSaveFunction implements OptionSaveInterface
 	public function saveOptions(){
 
 	}
-	
-	
+
 }

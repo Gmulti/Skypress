@@ -5,16 +5,13 @@ namespace Skypress;
 use Skypress\Component\Project\MainTheme;
 use Skypress\Component\Project\MainPlugin;
 
-use Skypress\Component\Mediator\ServiceContainerMediator;
-use Skypress\Component\Service\MediatorService;
-
 if(!class_exists('KernelSkypress')){
 
 
     /**
      * KernelSkypress framework Skypress
      *
-     * 
+     *
      *     // Example
      *     $theme = KernelSkypress::getInstance('theme');
      *     $theme->execute();
@@ -63,17 +60,17 @@ if(!class_exists('KernelSkypress')){
 
                     self::$typeFilter = 'theme';
 
-                    if (self::$theme == null) :
+                    if (self::$theme === null) :
                         $skeleton = self::$theme = new MainTheme($config);
                     else:
                         $skeleton = self::$theme;
                     endif;
 
-                  
+
 
                 elseif($type == 'plugin'):
 
-                    if($namePlugin == null):
+                    if($namePlugin === null):
                         throw new \Exception("We need the name of your plugin");
                     else:
 
@@ -195,11 +192,11 @@ if(!class_exists('KernelSkypress')){
             if ($type == 'theme'):
                 $config = apply_filters('skeleton_config_default_theme', KernelSkypress::$configs);
             else:
-                if($namePlugin != null):
+                if($namePlugin !== null):
                     $config = apply_filters('skeleton_config_default_plugin_' . $namePlugin, KernelSkypress::$configs);
-                endif; 
+                endif;
             endif;
-           
+
             return $config;
         }
 
@@ -210,7 +207,7 @@ if(!class_exists('KernelSkypress')){
          * @version 0.5
          * @static
          * @access public
-         * 
+         *
          * @return string
          */
         public static function getTheme(){
@@ -224,7 +221,7 @@ if(!class_exists('KernelSkypress')){
          * @version 0.5
          * @static
          * @access public
-         * 
+         *
          * @return array
          */
         public static function getPlugins(){
@@ -238,7 +235,7 @@ if(!class_exists('KernelSkypress')){
          * @version 0.5
          * @static
          * @access public
-         * 
+         *
          * @return array
          */
         public static function getTypeFilter(){

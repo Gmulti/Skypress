@@ -14,6 +14,6 @@ class OptionSaveTransient implements OptionSaveInterface
 {
 
 	public function saveOptions(){
-		
-	}	
+
+	}
 }

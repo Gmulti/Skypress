@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Plugin Name: Skypress
  * Plugin URI: http://skypress.fr
@@ -37,14 +37,17 @@ class Skypress{
 
 		$registerNamespaces = array(
 			'Skypress' => __DIR__ ,
-		    ucfirst($name) => $dir . '/src', 
+		    ucfirst($name) => $dir . '/src',
 		);
 
 		$plugins = $this->getPlugins();
 
-		foreach ($plugins as $key => $plugin):
-			$registerNamespaces[$key] = $plugin;
-		endforeach;
+		if (null !== $plugins):
+			foreach ($plugins as $key => $plugin):
+				$registerNamespaces[$key] = $plugin;
+			endforeach;
+		endif;
+
 
 		$registers = apply_filters( 'register_namespace', $registerNamespaces);
 
@@ -58,49 +61,53 @@ class Skypress{
 		$plugin_root = WP_PLUGIN_DIR;
 		$wp_plugins = array();
 
-		if ( !empty($plugin_folder) )
-			$plugin_root .= $plugin_folder;
+		try {
+			if ( !empty($plugin_folder) )
+				$plugin_root .= $plugin_folder;
 
-		// Files in wp-content/plugins directory
-		$plugins_dir = @ opendir( $plugin_root);
-		$plugin_files = array();
-		if ( $plugins_dir ) {
-			while (($file = readdir( $plugins_dir ) ) !== false ) {
-				if ( substr($file, 0, 1) == '.' )
-					continue;
-				if ( is_dir( $plugin_root.'/'.$file ) ) {
-					$plugins_subdir = @ opendir( $plugin_root.'/'.$file );
-					if ( $plugins_subdir ) {
-						while (($subfile = readdir( $plugins_subdir ) ) !== false ) {
-							if ( substr($subfile, 0, 1) == '.' )
-								continue;
-							if ( substr($subfile, -4) == '.php' )
-								$plugin_files[] = "$file/$subfile";
+			// Files in wp-content/plugins directory
+			$plugins_dir = opendir( $plugin_root);
+			$plugin_files = array();
+			if ( $plugins_dir ) {
+				while (($file = readdir( $plugins_dir ) ) !== false ) {
+					if ( substr($file, 0, 1) == '.' )
+						continue;
+					if ( is_dir( $plugin_root.'/'.$file ) ) {
+						$plugins_subdir = opendir( $plugin_root.'/'.$file );
+						if ( $plugins_subdir ) {
+							while (($subfile = readdir( $plugins_subdir ) ) !== false ) {
+								if ( substr($subfile, 0, 1) == '.' )
+									continue;
+								if ( substr($subfile, -4) == '.php' )
+									$plugin_files[] = "$file/$subfile";
+							}
+							closedir( $plugins_subdir );
 						}
-						closedir( $plugins_subdir );
+					} else {
+						if ( substr($file, -4) == '.php' )
+							$plugin_files[] = $file;
 					}
-				} else {
-					if ( substr($file, -4) == '.php' )
-						$plugin_files[] = $file;
 				}
+				closedir( $plugins_dir );
 			}
-			closedir( $plugins_dir );
-		}
 
-		if ( empty($plugin_files) )
-			return $wp_plugins;
+			if ( empty($plugin_files) )
+				return $wp_plugins;
 
-		foreach ( $plugin_files as $plugin_file ) {
+			foreach ( $plugin_files as $plugin_file ) {
 
-			if ( !is_readable( "$plugin_root/$plugin_file" ) )
-				continue;
+				if ( !is_readable( "$plugin_root/$plugin_file" ) )
+					continue;
 
-			$plugin_dir = $plugin_root;
-			$plugin_name = dirname($plugin_file);
+				$plugin_dir = $plugin_root;
+				$plugin_name = dirname($plugin_file);
 
-			if(!array_key_exists($plugin_name, $wp_plugins)):
-				$wp_plugins[ $plugin_name ] = $plugin_dir;
-			endif;
+				if(!array_key_exists($plugin_name, $wp_plugins)):
+					$wp_plugins[ $plugin_name ] = $plugin_dir;
+				endif;
+			}
+		} catch (Exception $e) {
+			return null;
 		}
 
 		return $wp_plugins;

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 
 namespace Skypress\Component\Strategy\XML;
@@ -11,18 +11,18 @@ if(!class_exists('CustomPostTypeXMLParameter')){
  	 *
 	 * @version 0.6
 	 * @since 0.6
-	 * 
-	 * @author Thomas DENEULIN <contact@skypress.fr> 
-	 * 
+	 *
+	 * @author Thomas DENEULIN <contact@skypress.fr>
+	 *
 	 */
 	class CustomPostTypeXMLParameter extends XMLStrategy implements ServiceParameterInterface{
-		
+
 		/**
 		 * @version 0.6
 		 * @since 0.6
 		 *
 		 * @var array
-		 * @access protected 
+		 * @access protected
 		 */
 		protected $cpts = array();
 
@@ -31,7 +31,7 @@ if(!class_exists('CustomPostTypeXMLParameter')){
 		 * @version 0.6
 		 * @since 0.6
 		 *
-		 * @access public 
+		 * @access public
 		 * @param string $file
 		 */
 		public function __construct($file = null){
@@ -43,7 +43,7 @@ if(!class_exists('CustomPostTypeXMLParameter')){
 	 	 *
 		 * @version 0.6
 		 * @since 0.6
-		 * @access public 
+		 * @access public
 		 */
 		public function getServiceParameter(){
 			return apply_filters( 'get_service_parameter_cpt', 'CustomPostTypeFactoryService' );
@@ -54,18 +54,18 @@ if(!class_exists('CustomPostTypeXMLParameter')){
 	 	 *
 		 * @version 0.6
 		 * @since 0.6
-		 * @access public 
+		 * @access public
 		 */
 		public function getCustomPostTypes(){
 			$this->crawler->filter('custom-post-type')->each(function($node,$i){
-		
+
 				$this->cpts[$i]['slug'] = $node->attr('slug');
 
 				$node->children()->each(function($nodeChildren, $y) use($i){
 					$type = $nodeChildren->attr('type');
 					$keyName = $nodeChildren->current()->nodeName;
 					$array = array();
-					
+
 					if ($type == 'collection') {
 						foreach ($nodeChildren->children() as $key => $value) {
 							$array[] = $value->nodeValue;
@@ -85,11 +85,11 @@ if(!class_exists('CustomPostTypeXMLParameter')){
 		}
 
 		/**
-	 	 * Check if exist configuration custom post type 
+	 	 * Check if exist configuration custom post type
 	 	 *
 		 * @version 0.6
 		 * @since 0.6
-		 * @access public 
+		 * @access public
 		 */
 		public function exist(){
 			try {
@@ -106,17 +106,15 @@ if(!class_exists('CustomPostTypeXMLParameter')){
 
 			$transform = array();
 
-			$xml = $this->crawler;
-
 			foreach ($cpts as $key => $cpt):
 				if('stdClass' === get_class($cpt)):
 					$obj = new CustomPostType($key, $cpt);
 					foreach ($obj->getArgs() as $key => $args):
-		
+
 					endforeach;
 				endif;
 			endforeach;
-	
+
 			return $transform;
 		}
 	}
