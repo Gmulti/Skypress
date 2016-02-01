@@ -1,0 +1,39 @@
+<?php
+namespace Skypress\Models\Specification;
+
+use Skypress\Models\Specification\AbstractSpecification;
+
+/**
+ * @version 1.0.0
+ * @since 1.0.0
+ * 
+ * @author Thomas DENEULIN <contact@wp-god.com> 
+ */
+class AndX extends AbstractSpecification
+{
+
+    protected $left;
+    protected $right;
+
+    /**
+     *
+     * @param SpecificationInterface $left
+     * @param SpecificationInterface $right
+     */
+    public function __construct(SpecificationInterface $left, SpecificationInterface $right)
+    {
+        $this->left = $left;
+        $this->right = $right;
+    }
+
+    /**
+     *
+     * @param $item
+     *
+     * @return bool
+     */
+    public function isSatisfedBy($item)
+    {
+        return $this->left->isSatisfedBy($item) && $this->right->isSatisfedBy($item);
+    }
+}

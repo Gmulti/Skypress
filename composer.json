@@ -1,0 +1,16 @@
+{
+    "name": "skypress",
+    "license": "MIT",
+    "type": "project",
+    "description": "Framework Skypress",
+    "authors": [
+        {
+            "name": "Thomas DENEULIN"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Skypress\\": "Skypress/"
+        }
+    }
+}
