@@ -3,7 +3,10 @@
 namespace Skypress;
 
 use Skypress\Models\ContainerInterface;
-use Skypress\Models\ServiceInterface;
+use Skypress\Models\ContainerServiceInterface;
+use Skypress\Models\MediatorServicesInterface;
+
+use Skypress\ContainerServiceTrait;
 
 class Container implements ContainerInterface
 {
@@ -17,12 +20,20 @@ class Container implements ContainerInterface
      */
     public function __construct($array = array()){
         $this->setServices($array);
+        foreach ($this->getServices() as $key => $service) {
+            if ($service instanceOf MediatorServicesInterface) {
+                $service->setServices($this->getServices())
+                        ->postConstruct();
+            }
+        }
     }
 
+    /**
+     * @return array $array
+     */
     public function getServices(){
         return $this->services;
     } 
-
 
     /**
      * @param string $key
@@ -38,11 +49,11 @@ class Container implements ContainerInterface
     }
 
     /**
-     * @param ServiceInterface $service
+     * @param ContainerServiceInterface $service
      *
      * @return Container
      */
-    public function setService(ServiceInterface $service){
+    public function setService(ContainerServiceInterface $service){
 
         $classname = get_class($service);
 
@@ -58,7 +69,7 @@ class Container implements ContainerInterface
     }
 
     /**
-     * @param ServiceInterface[] $services default empty
+     * @param ContainerServiceInterface[] $services default empty
      *
      * @return Container
      */

@@ -8,4 +8,6 @@ namespace Skypress\Models;
  * 
  * @author Thomas DENEULIN <contact@wp-god.com> 
  */
-interface ServiceInterface {}
+interface MediatorServicesInterface {
+    public function postConstruct();
+}
