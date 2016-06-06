@@ -1,11 +1,11 @@
 <?php
 
-namespace YurPlanSkypress;
+namespace Skypress;
 
-use YurPlanSkypress\Models\ContainerInterface;
-use YurPlanSkypress\Models\ContainerServiceInterface;
-use YurPlanSkypress\Models\HooksInterface;
-use YurPlanSkypress\ContainerServiceTrait;
+use Skypress\Models\ContainerInterface;
+use Skypress\Models\ContainerServiceInterface;
+use Skypress\Models\HooksInterface;
+use Skypress\ContainerServiceTrait;
 
 class ContainerActions extends Container implements ContainerInterface
 {

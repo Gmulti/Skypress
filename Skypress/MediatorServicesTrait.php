@@ -1,6 +1,6 @@
 <?php
 
-namespace YurPlanSkypress;
+namespace Skypress;
 
 trait MediatorServicesTrait
 {

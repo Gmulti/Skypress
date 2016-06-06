@@ -1,11 +1,11 @@
 <?php
 
-namespace YurPlanSkypress;
+namespace Skypress;
 
-use YurPlanSkypress\Models\ContainerInterface;
-use YurPlanSkypress\Models\ContainerServiceInterface;
-use YurPlanSkypress\Models\ServiceInterface;
-use YurPlanSkypress\ContainerServiceTrait;
+use Skypress\Models\ContainerInterface;
+use Skypress\Models\ContainerServiceInterface;
+use Skypress\Models\ServiceInterface;
+use Skypress\ContainerServiceTrait;
 
 class ContainerServices extends Container implements ContainerInterface
 {
