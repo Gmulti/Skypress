@@ -2,6 +2,8 @@
 
 namespace Skypress\Models\Specification;
 
+defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+
 use Skypress\Models\Specification\AbstractSpecification;
 
 class ContainsSpecification extends AbstractSpecification

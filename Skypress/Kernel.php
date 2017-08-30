@@ -2,6 +2,8 @@
 
 namespace Skypress;
 
+defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+
 use Skypress\ContainerServiceTrait;
 use Skypress\Models\ServiceInterface;
 use Skypress\Models\HooksAdminInterface;

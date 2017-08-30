@@ -2,6 +2,8 @@
 
 namespace Skypress;
 
+defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+
 trait MediatorServicesTrait
 {
     /**

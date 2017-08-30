@@ -2,6 +2,8 @@
 
 namespace Skypress\Services\Specification;
 
+defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+
 use Skypress\Models\SpecificationFactoryInterface;
 use Skypress\Models\ServiceInterface;
 use Skypress\Factory\Specification\SpecificationFactory;

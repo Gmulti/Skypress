@@ -1,6 +1,8 @@
 <?php
+
 namespace Skypress\Models\Specification;
 
+defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
 /**
  * @version 1.0.0

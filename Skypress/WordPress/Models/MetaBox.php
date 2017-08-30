@@ -2,6 +2,8 @@
 
 namespace Skypress\WordPress\Models;
 
+defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+
 use Skypress\Models\HooksInterface;
 
 /**
