@@ -2,10 +2,12 @@
 
 namespace Skypress\WordPress\Helpers;
 
+defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+
 
 /**
  *
- * @author Thomas DENEULIN <contact@wp-god.com>
+ * @author Thomas DENEULIN <thomas@delipress.io>
  * @version 1.0.0
  * @since 1.0.0
  */

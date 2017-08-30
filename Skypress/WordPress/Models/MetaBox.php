@@ -2,12 +2,14 @@
 
 namespace Skypress\WordPress\Models;
 
+defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+
 use Skypress\Models\HooksInterface;
 
 /**
  * Metabox
  *
- * @author Thomas DENEULIN <contact@wp-god.com>
+ * @author Thomas DENEULIN <thomas@delipress.io>
  * @version 1.0.0
  * @since 1.0.0
  */

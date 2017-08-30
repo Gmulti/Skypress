@@ -2,6 +2,8 @@
 
 namespace Skypress;
 
+defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+
 use Skypress\ContainerServiceTrait;
 use Skypress\Models\ServiceInterface;
 use Skypress\Models\HooksAdminInterface;
@@ -13,25 +15,45 @@ use Skypress\Models\DeactivationInterface;
 abstract class Kernel{
     use ContainerServiceTrait;
 
+    /** 
+     * @var string
+     */
     protected $slug;
+    
+    /**
+     *
+     * @param stdClass $action
+     */
+    protected function preHooks($action){
+        if($action instanceOf AbstractHook){
+            $action->preHooks();    
+        }
+    }
 
+    /**
+     * @return Kernel
+     */
     public function execute(){
 
         foreach ($this->getActions() as $key => $action) {
+            
             switch(true) {  
-                case $action instanceof HooksAdminInterface:
+                case $action instanceOf HooksAdminInterface:
                     if (is_admin()) {
+                        $this->preHooks($action);
                         $action->hooks();
                     }
                     break;
 
-                case $action instanceof HooksFrontInterface:
+                case $action instanceOf HooksFrontInterface:
                     if (!is_admin()) {
+                        $this->preHooks($action);
                         $action->hooks();
                     }
                     break;
 
-                case $action instanceof HooksInterface:
+                case $action instanceOf HooksInterface:
+                    $this->preHooks($action);
                     $action->hooks();
                     break;
             }
@@ -40,32 +62,51 @@ abstract class Kernel{
         return $this;
 
     }
-
+    
+    /**
+     * @return void
+     */
     public function executePlugin(){
-
         switch (current_filter()) {
             case 'plugins_loaded':
                 foreach ($this->getActions() as $key => $action) {
-                    if($action instanceOf HooksAdminInterface && is_admin()){
-                        $action->hooks();
-                    }
-                    else if($action instanceOf HooksInterface){
-                        $action->hooks();
+                    switch(true) {  
+                        case $action instanceOf HooksAdminInterface:
+                            if (is_admin()) {
+                                $this->preHooks($action);
+                                $action->hooks();
+                            }
+                            break;
+
+                        case $action instanceOf HooksFrontInterface:
+                            if (!is_admin()) {
+                                $this->preHooks($action);
+                                $action->hooks();
+                            }
+                            break;
+
+                        case $action instanceOf HooksInterface:
+                            $this->preHooks($action);
+                            $action->hooks();
+                            break;
                     }
                 }
                 break;
-                
-            case 'activate_' . $this->slug . '/' . $this->slug . '.php"':
+            case 'activate_' . $this->slug . '/' . $this->slug . '.php':
                 foreach ($this->getActions() as $key => $action) {
+                    
                     if($action instanceOf ActivationInterface){
-                        $action->hooks();
+                        $this->preHooks($action);
+                        $action->activation();
                     }
                 }
                 break;
             case 'deactivate_' . $this->slug . '/' . $this->slug . '.php':
                 foreach ($this->getActions() as $key => $action) {
+
                     if($action instanceOf DeactivationInterface){
-                        $action->hooks();
+                        $this->preHooks($action);
+                        $action->deactivation();
                     }
                 }
                 break;
