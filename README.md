@@ -7,8 +7,6 @@ Skypress is a PHP library for WordPress CMS wants to make a response to several 
 * Versioning
 * Code portability
 
-
-
 ## How use ?
 
 Execute : `composer dump`
