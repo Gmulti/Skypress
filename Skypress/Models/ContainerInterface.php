@@ -28,5 +28,9 @@ interface ContainerInterface {
      */
     public function getService($key);
     
+    /**
+     *
+     * @return array
+     */
     public function getServices();
 }

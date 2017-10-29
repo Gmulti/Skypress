@@ -13,7 +13,9 @@ use Skypress\Models\Specification\AbstractSpecification;
  */
 class NotX extends AbstractSpecification
 {
-
+    /**
+     * @var SpecificationInterface
+     */
     protected $specification;
 
     /**

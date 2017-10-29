@@ -13,8 +13,16 @@ use Skypress\Models\Specification\AbstractSpecification;
  */
 class AndX extends AbstractSpecification
 {
-
+    /**
+     *
+     * @var SpecificationInterface
+     */
     protected $left;
+    
+    /**
+     *
+     * @var SpecificationInterface
+     */
     protected $right;
 
     /**

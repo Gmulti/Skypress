@@ -15,8 +15,14 @@ use Skypress\Models\Specification\AbstractSpecification;
 class OrX extends AbstractSpecification
 {
 
+    /**
+     * @var SpecificationInterface
+     */
     protected $left;
 
+    /**
+     * @var SpecificationInterface
+     */
     protected $right;
 
     /**
