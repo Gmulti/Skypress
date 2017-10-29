@@ -11,74 +11,81 @@ Skypress is a PHP library for WordPress CMS wants to make a response to several 
 
 ## How use ?
 
-Execute : `composer dump`
+Generate autoload : `composer dump`
 
 
 ## Features
 
-* Service Container
-* Pattern Specification
+[x] Service Container
+[x] Pattern Specification
+[ ] Generate custom post type with config file 
+[ ] Generate taxonomies with config file 
 
 ## Example
 
 ```php
 
+<?php
+
+/**
+ * Plugin Name: Plugin Example
+ * Description: Example plugin
+ * Version: 1.0.0
+ * Author: Thomas DENEULIN
+ * License: GPLv2
+ * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain: example
+ * Domain Path: /languages/
+ *
+ */
+
+if ( ! defined( 'ABSPATH' ) ) exit;
+
+require_once dirname(__FILE__) . "/vendor/autoload.php";
+
 use Skypress\Kernel;
-use Skypress\Container;
-use Skypress\Services\Specification\Specification;
+use Skypress\ContainerServices;
+use Skypress\ContainerActions;
+use Skypress\WordPress\Actions\AbstractHook;
 
-class MyTheme extends Kernel {    
+define("PLUGIN_BASE_FILE", plugin_basename( __FILE__ ));
+
+class PluginExample extends Kernel {
+
+    public function __construct(){
+        load_plugin_textdomain( "example", false, dirname( PLUGIN_BASE_FILE ) . '/languages');
+    }
+
     public function execute(){
-        parent::execute();
 
-        $specServices = $this->getService("Specification");
-        $data = array(
-            array(
-                array(
-                    "condition_test" => "equals",
-                    "value"          => "foo"
+        add_action( 'plugins_loaded' , array($this,'executePlugin'));
+        register_activation_hook(__FILE__, array($this, 'executePlugin'));
+        register_deactivation_hook(__FILE__, array($this, 'executePlugin'));
 
-                ),
-                array(
-                    "condition_test" => "contains",
-                    "value"          => "foo"
-                )
-            ),
-            array(
-                array(
-                    "condition_test" => "contains",
-                    "value"          => "bar"
+    }
 
-                ),
-            )
-        );
-        $spec = $specServices->constructSpecification($data);
-        if($spec->isSatisfedBy("foo")){
-            echo "Yes";
-        }
+}
 
+$services = array(); // Any of your services
 
-        if($spec->isSatisfedBy("biere")){
-            echo "Yes";
-        }
-        else{
-            echo "No";
-        }
+$containerServices = new ContainerServices($services);
+
+$prepareActions = array(); // Any of your actions
+
+foreach ($prepareActions as $key => $prepareAction) {
+    if($prepareAction instanceOf AbstractHook){
+        $prepareAction->setContainerServices($containerServices);
     }
 }
 
-$theme  = new MyTheme();
+$containerActions = new ContainerActions($actions);
 
-$container = new Container(
-    array(
-        new Specification()
-    )
-);
+$pluginExample  = new PluginExample();
+$pluginExample->setContainerServices($containerServices)
+			  ->setContainerActions($containerActions)
+              ->execute();
 
-$theme->setContainer($container)
-      ->execute();
 ```
-
 
 
 [twitter-account]: https://twitter.com/TDeneulin

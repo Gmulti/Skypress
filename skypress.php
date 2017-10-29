@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Skypress
- * Description: Library Skypress for WordPress
+ * Description: Library development for Plugin WordPress
  * Version: 1.0.0
  * Author: Thomas DENEULIN
  */
