@@ -42,6 +42,17 @@ final class SpecificationFactoryDefaultTest extends WP_UnitTestCase
         );
     }
 
+    public function testSpecificationFactoryCountConditionTest(){
+        
+        $result = $this->specification->getSpecificationFactory()->getConditionsTest();
+
+        $this->assertCount(
+            4,
+            $result
+        );
+    
+    }
+
     public function testConstructSpecificationIsSatisfed(){
         $spec = $this->specification->constructSpecification($this->data);
         

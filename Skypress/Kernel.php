@@ -13,6 +13,7 @@ use Skypress\Models\ActivationInterface;
 use Skypress\Models\DeactivationInterface;
 
 abstract class Kernel{
+    
     use ContainerServiceTrait;
 
     /** 

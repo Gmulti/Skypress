@@ -23,7 +23,30 @@ class SpecificationFactory implements SpecificationFactoryInterface
         ));
     }
 
+    /**
+     *
+     * @param string $key
+     * @param string $label
+     * @return SpecificationFactory
+     */
+    public function setConditionTest($key, $label){
+        $this->conditionTest[$key] = $label;
+        return $this;
+    }
 
+    /**
+     *
+     * @return array
+     */
+    public function getConditionsTest(){
+        return $this->conditionTest;
+    }
+
+    /**
+     *
+     * @param array $data
+     * @return Specification
+     */
     public function constructSpecification($data){
 
         $arraySpec = array();
@@ -40,6 +63,11 @@ class SpecificationFactory implements SpecificationFactoryInterface
         return $specification;
     }
 
+    /**
+     *
+     * @param array $arraySpec
+     * @return Specification
+     */
     protected function constructOrSpecification($arraySpec){
         $specification = null;
 
@@ -63,6 +91,11 @@ class SpecificationFactory implements SpecificationFactoryInterface
         return $specification;
     }
 
+    /**
+     *
+     * @param array $andSpecs
+     * @return Specification
+     */
     protected function constructAndSpecification($andSpecs){
         $andSpecification = null;
 
@@ -82,6 +115,12 @@ class SpecificationFactory implements SpecificationFactoryInterface
         return $andSpecification;
     }
 
+    /**
+     *
+     * @param string $conditionTest
+     * @param string $value
+     * @return Specification
+     */
     public function getSpecificationFromConditionTest($conditionTest, $value){
 
         if(!array_key_exists($conditionTest, $this->conditionTest)){
