@@ -1,5 +1,7 @@
 # Skypress
 
+[![Build Status][travis-image]][travis-url] 
+
 Skypress is a PHP library for WordPress CMS wants to make a response to several issues that revolve around WordPress:
 
 * The Object Oriented Programming
@@ -76,3 +78,9 @@ $container = new Container(
 $theme->setContainer($container)
       ->execute();
 ```
+
+
+
+[twitter-account]: https://twitter.com/TDeneulin
+[travis-image]: https://travis-ci.org/Gmulti/deli-builder.svg?branch=master
+[travis-url]: https://travis-ci.org/Gmulti/Skypress.svg?branch=dev
