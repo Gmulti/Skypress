@@ -82,5 +82,5 @@ $theme->setContainer($container)
 
 
 [twitter-account]: https://twitter.com/TDeneulin
-[travis-image]: https://travis-ci.org/Gmulti/Skypress.svg?branch=master
+[travis-image]: https://travis-ci.org/Gmulti/Skypress.svg
 [travis-url]: https://travis-ci.org/Gmulti/Skypress
